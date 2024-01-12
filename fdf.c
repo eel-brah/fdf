@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 08:30:22 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/12 11:32:26 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/12 13:02:54 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,13 +164,16 @@ void	free_lines(char **lines)
 	free(lines);
 }
 
-void	free_map(t_point **map, int y)
+void	free_map(t_map *map)
 {
-	int	i;
+	int		i;
+	t_point	**points;
 
 	i = 0;
-	while (i < y)
-		free(map[i++]);
+	points = map->points;
+	while (i < map->hight)
+		free(points[i++]);
+	free(points);
 	free(map);
 }
 
@@ -193,7 +196,7 @@ int	lines_count(char **lines)
 	return (count);
 }
 
-char	**split_line(char *line, int *len)
+char	**split_line(char *line, int *len, int width)
 {
 	char	**s;
 
@@ -203,24 +206,27 @@ char	**split_line(char *line, int *len)
 	*len = 0;
 	while (s[*len])
 		(*len)++;
-	if (!*len)
+	if (!*len || *len < width)
 	{
-		free(s);
+		ft_printf("Invalid map\n");
+		free_lines(s);
 		return (NULL); 
 	}
 	return (s);
 }
 
-void	print_map(t_point **map, int y_len, int x_len)
+void	print_map(t_map *map)
 {
 	int	x = 0;
 	int y = 0;
-	while (y < y_len)
+	t_point **points = map->points;
+
+	while (y < map->hight)
 	{
 		x = 0;
-		while (x < x_len)
+		while (x < map->width)
 		{
-			ft_printf("{%i,%i,%i,C:%i} ", map[y][x].x, map[y][x].y, map[y][x].z, map[y][x].color);
+			ft_printf("{%i,%i,%i,C:%i} ", points[y][x].x, points[y][x].y, points[y][x].z, points[y][x].color);
 			x++;
 		}
 		ft_printf("\n");
@@ -269,23 +275,23 @@ char	*get_color(int *color, char *s)
 	return (s);
 }
 
-void	*fill_map_x(t_point **map, int y, int x_len, char **s)
+void	*fill_map_x(t_point **points, int y, int width, char **s)
 {
 	int		x;
 
-	map[y] = malloc(sizeof(t_point) * x_len);
-	if (!map[y])
+	points[y] = malloc(sizeof(t_point) * width);
+	if (!points[y])
 	{
 		free_lines(s);
 		return (NULL);
 	}
 	x = 0;
-	while (x < x_len)
+	while (x < width)
 	{
-		map[y][x].x = x;
-		map[y][x].y = y;
-		map[y][x].z = ft_atoi(s[x]);
-		if (!get_color(&(map[y][x].color), s[x]))
+		points[y][x].x = x;
+		points[y][x].y = y;
+		points[y][x].z = ft_atoi(s[x]);
+		if (!get_color(&(points[y][x].color), s[x]))
 		{
 			free_lines(s);
 			return (NULL);
@@ -293,67 +299,80 @@ void	*fill_map_x(t_point **map, int y, int x_len, char **s)
 		x++;
 	}
 	free_lines(s);
-	return (map);
+	return (points);
 }
 
-int	fill_map(t_point **map, char **lines)
+int	fill_map(t_map *map, char **lines)
 {
 	char	**s;
 	int		x_len;
 	int		y;
-	int		x_len_tmp;
 
 	y = 0;
-	s = split_line(*lines, &x_len);
+	s = split_line(*lines, &(map->width), 0);
 	if (!s)
 		return (y);
 	while (lines[y])
 	{
 		if (y)
 		{
-			s = split_line(lines[y], &x_len_tmp);
-			if (x_len_tmp < x_len || !s)
-			{
-				free_lines(s);
+			s = split_line(lines[y], &x_len, map->width);
+			if (x_len < map->width || !s)
 				return (y);
-			}
 		}
-		if (!fill_map_x(map, y, x_len, s))
+		if (!fill_map_x(map->points, y, map->width, s))
 			return (++y);
 		y++;
 	}
-	print_map(map, y, x_len);
 	return (-1);
 }
 
-t_point	**gen_map(int fd)
+t_map	*map_allocation(char **lines)
 {
-	t_point	**map;
+	t_map	*map;
+
+	map = pr_malloc(1, sizeof(t_map));
+	if (!map)
+	{
+		free_lines(lines);
+		return (NULL);
+	}
+	map->hight = lines_count(lines);
+	map->points = pr_malloc(map->hight, sizeof(t_point *));
+	if (!map->points || !map->hight)
+	{
+		if (!map->hight)
+			ft_printf("Invalid map\n");
+		free(map->points);
+		free_lines(lines);
+		free(map);
+		return (NULL);
+	}
+	return (map);
+}
+
+t_map *gen_map(int fd)
+{
 	char	**lines;
-	int		y_len;
 	int		y;
+	t_map	*map;
 
 	lines = get_lines(fd);
 	if (!lines)
 		return (NULL);
 	print_lines(lines); // kkl
-	y_len = lines_count(lines);
-	map = pr_malloc(y_len, sizeof(t_point *));
-	if (!map || !y_len)
-	{
-		free(map);
-		free_lines(lines);
+	map = map_allocation(lines);
+	if (!map)
 		return (NULL);
-	}
 	y = fill_map(map, lines);
 	if (y != -1)
 	{
 		free_lines(lines);
-		free_map(map, y);
+		map->hight = y;
+		free_map(map);
 		return (NULL);
 	}
 	free_lines(lines); 
-	free_map(map, y_len);
 	return (map);
 }
 
@@ -362,14 +381,15 @@ int main(int ac, char **av)
 	atexit(fu);
 	t_vars	vars;
 	t_data	img;
-	t_point	**map;
+	t_map	*map;
 	int		fd;
 
 	fd = check_args(ac, av);
 	map = gen_map(fd);
-	
-	
-
+	if (!map)
+		return 1;
+	print_map(map);
+	free_map(map);
 	close(fd);
 	return 0;
 	init(&vars, &img);

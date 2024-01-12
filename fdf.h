@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 08:30:34 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/12 11:37:08 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/12 11:56:58 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ typedef struct s_point
 
 typedef	struct s_map
 {
-	int	width;
-	int	hight;
-	t_point point;
+	int		width;
+	int		hight;
+	t_point	**points;
 }	t_map;
 
 typedef struct s_data {

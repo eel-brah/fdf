@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 08:30:34 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/12 11:56:58 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/12 15:28:06 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,13 @@ typedef struct s_vars
 	t_data	*img;
 }	t_vars;
 
+typedef struct s_clear
+{
+	t_vars	*vars;
+	t_map	*map;
+	int		fd;
+}	t_clear;
+
 typedef struct s_buffer
 {
 	char	*buf;
@@ -57,5 +64,7 @@ typedef struct s_buffer
 }	t_buffer;
 
 char	*get_next_line(int fd, size_t buf_size);
-
+void	*pr_malloc(size_t size, size_t type_size);
+t_map	*gen_map(int fd);
+void	free_map(t_map *map);
 #endif

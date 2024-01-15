@@ -11,15 +11,15 @@ LIBFT := $(LIBFTDIR)/libft.a
 INCLUDE := $(INCLUDE_DIR)/fdf.h
 # INCLUDE_BONUS := $(INCLUDE_DIR)/minitalk_bonus.h
 
-SRC := fdf.c gnl.c gen_map.c drow_line.c
+SRC := test2.c
 OBJ := $(SRC:.c=.o)
 # OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 
-NAME := fdf
+NAME := ts
 
 all: lib $(NAME)
 
-$(NAME): $(OBJ) $(LIBFT) $(INCLUDE)
+$(NAME): $(OBJ) $(LIBFT)
 	@$(CC) $(CFLAGS) $(OBJ) -lmlx -framework OpenGL -framework AppKit $(LIBFT) -o $(NAME)
 
 %.o: %.c

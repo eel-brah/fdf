@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 08:30:22 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/12 16:50:38 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/15 21:27:57 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,13 @@ int main(int ac, char **av)
 	mlx_hook(vars.win, 3, 0, key_handler, &clear);
 	mlx_hook(vars.win, 17, 0, close_w, &clear);
 	
-	// mlx_put_image_to_window(vars.mlx , vars.win, vars.img->img, 0, 0);
+		t_line line;
+	line.x1 = 200;
+	line.y1 = 299;
+	line.x2 = 333;
+	line.y2 = 10;
+	drow_line(line, &img);
+	mlx_put_image_to_window(vars.mlx , vars.win, vars.img->img, 0, 0);
 	mlx_loop(vars.mlx);
 	
 	clear_x(&clear);

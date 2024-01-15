@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 08:30:34 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/12 15:28:06 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/15 21:29:05 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,22 @@ char	*get_next_line(int fd, size_t buf_size);
 void	*pr_malloc(size_t size, size_t type_size);
 t_map	*gen_map(int fd);
 void	free_map(t_map *map);
+void	put_pixel(t_data *data, int x, int y, unsigned int color);
+typedef struct s_line
+{
+	int	x1;
+	int	y1;
+	int	x2;
+	int	y2;
+}	t_line;
+
+typedef struct s_delta
+{
+	int	dx;
+	int	dy;
+	int	d;
+	int	xs;
+	int	ys;
+}	t_delta;
+void	drow_line(t_line line, t_data *img);
 #endif

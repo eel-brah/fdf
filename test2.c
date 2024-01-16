@@ -96,7 +96,11 @@ void slop(t_line line, t_delta *delta)
 	delta->dx = absv(delta->dx);
 	delta->dy = absv(delta->dy);
 }
-
+// line.x1 = 29;
+// 	line.y1 = 101;
+// 	line.x2 = 36;
+// 	line.y2 = 105;
+// dx = 7 | dx = 4
 void	drow_line(t_line line, t_data *img)
 {
 	t_delta	delta;
@@ -104,28 +108,31 @@ void	drow_line(t_line line, t_data *img)
 	slop(line, &delta);
 	if (delta.dx > delta.dy)
 	{
+		printf("%i %i\n", delta.dx, delta.dy);
 		delta.d = 2 * delta.dy - delta.dx;
 		for (int i = 0; i < delta.dx; i++)
 		{
 			my_mlx_pixel_put(img, line.x1, line.y1, 0x00CCCC00);
 			line.x1 += delta.xs;
-			if (delta.d <= 0)
+			if (delta.d < 0)
 				delta.d += (2 * delta.dy);
 			else
 			{
-				delta.d += 2 * (delta.dx - delta.dy);
+				delta.d += 2 * (delta.dy - delta.dx);
 				line.y1 += delta.ys;
 			}
 		}
 	}
 	else
 	{
+		printf("dd\n");
+
 		delta.d = 2 * delta.dx - delta.dy;
 		for (int i = 0; i < delta.dy; i++)
 		{
 			my_mlx_pixel_put(img, line.x1, line.y1, 0x00CCCC00);
 			line.y1 += delta.ys;
-			if (delta.d <= 0)
+			if (delta.d < 0)
 				delta.d += (2 * delta.dx);
 			else
 			{
@@ -177,11 +184,11 @@ int	main(void)
 
 	// plotLine(300, 300, 300, 50, &img);
 	t_line line;
-	line.x1 = 200;
-	line.y1 = 299;
-	line.x2 = 333;
-	line.y2 = 10;
-	plotLine(200, 299, 333,10, &img);
+	line.x1 = 29;
+	line.y1 = 101;
+	line.x2 = 36;
+	line.y2 = 105;
+	plotLine(29, 101, 36, 105, &img);
 	drow_line(line, &img2);
 	mlx_put_image_to_window(vars.mlx , vars.win, img.img, 0, 0);
 	mlx_put_image_to_window(vars.mlx , vars.win, img2.img, 500, 500);

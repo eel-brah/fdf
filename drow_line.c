@@ -56,11 +56,11 @@ void	drow_line(t_line line, t_data *img)
 		{
 			put_pixel(img, line.x1, line.y1, 0x00CCCC00);
 			line.x1 += delta.xs;
-			if (delta.d <= 0)
+			if (delta.d < 0)
 				delta.d += (2 * delta.dy);
 			else
 			{
-				delta.d += 2 * (delta.dx - delta.dy);
+				delta.d += 2 * (delta.dy - delta.dx);
 				line.y1 += delta.ys;
 			}
 		}
@@ -72,7 +72,7 @@ void	drow_line(t_line line, t_data *img)
 		{
 			put_pixel(img, line.x1, line.y1, 0x00CCCC00);
 			line.y1 += delta.ys;
-			if (delta.d <= 0)
+			if (delta.d < 0)
 				delta.d += (2 * delta.dx);
 			else
 			{

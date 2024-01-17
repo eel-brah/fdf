@@ -48,19 +48,19 @@ void fu()
 	system("leaks fdf");
 }
 
-void	init(t_vars	*vars, t_data *img)
+void	init(t_vars	*vars, t_data *img, int width, int hight)
 {
 	vars->mlx = mlx_init();
 	if (!vars->mlx)
 		exit(1);
-	vars->win = mlx_new_window(vars->mlx, WIDTH, HIGHT, "FDF");
+	vars->win = mlx_new_window(vars->mlx, width, hight, "FDF");
 	if (!vars->win)
 	{
 		//mlx_destroy_display(vars->mlx);
 		free(vars->mlx);
 		exit(1);
 	}
-	img->img = mlx_new_image(vars->mlx, WIDTH, HIGHT);
+	img->img = mlx_new_image(vars->mlx, width, hight);
 	if (!img->img)
 	{
 		mlx_destroy_window(vars->mlx, vars->mlx);
@@ -139,8 +139,26 @@ static void iso(int *x, int *y, int z)
     previous_x = *x;
     previous_y = *y;
     *x = (previous_x - previous_y) * cos(0.46373398);
-    *y = -z + (previous_x + previous_y) * sin(0.46373398);
+    *y = (previous_x + previous_y) * sin(0.46373398) - z;
+	// 1.5707
 }
+
+// xFla = function (x, y, z) {
+// 	// cartesian coordinates
+// 	xCart = (x-z)*Math.cos(0.46365);
+// 	// flash coordinates
+// 	xI = xCart+xOrigin;
+// 	return (xI);
+// };
+ 
+// // transforms x,y,z coordinates into Flash y coordinate
+// yFla = function (x, y, z) {
+// 	// cartesian coordinates
+// 	yCart = y+(x+z)*Math.sin(0.46365);
+// 	// flash coordinates
+// 	yI = -yCart+yOrigin;
+// 	return (yI);
+// };
 
 int main(int ac, char **av)
 {
@@ -162,12 +180,29 @@ int main(int ac, char **av)
 	clear.fd = fd;
 	clear.map = map;
 	clear.vars = &vars;
-	
-	// int width = map->width * 50;
-	// int hight = map->hight * 50;
 
-	init(&vars, &img);
-	// init(&vars, &img, width, hight);
+	int width = 500;
+	int hight = 500;
+	float scale = 0.75 * hight / sqrt(pow(map->width, 2) + pow(map->hight, 2));
+	int max_z = 0;
+	t_point **points = map->points;
+
+	for (int i = 0; i < map->hight - 1; i++)
+	{
+		for (int j = map->width - 1; j > 0; j--)
+		{
+			if (map->points[i][j].z > max_z)
+				max_z = map->points[i][j].z;
+		}
+	}
+	
+	// int width = sqrt(pow(map->width * scale, 2) + pow(map->hight* scale, 2)) * 1.2;
+	// int hight = (map->hight + max_z) * scale * 1.5;
+	
+	ft_printf("%i %i\n", width, hight);
+
+	// init(&vars, &img);
+	init(&vars, &img, width, hight);
 	mlx_hook(vars.win, 3, 0, key_handler, &clear);
 	mlx_hook(vars.win, 17, 0, close_w, &clear);
 	
@@ -184,28 +219,31 @@ int main(int ac, char **av)
 	// int right = (WIDTH - map->width * 8) / 2;
 	// int top = (HIGHT - map->hight * 18) / 2;
 	int right = 0;
-	int top = 300;
-	int scale = 20;
-	for (int i = 0; i < map->width; i++)
+	int top = 0;
+	int z;
+	
+	for (int i = 0; i < map->hight - 1; i++)
 	{
-		for (int j = 1; j < map->hight; j++)
+		for (int j = map->width - 1; j > 0; j--)
 		{
-			line.x1 = right + (j - 1) * scale;
-			line.y1 = top + i * scale;
-			line.x2 = right + j * scale;
-			line.y2 = top + i * scale;
-			iso(&line.x1, &line.y1, 0);
-			iso(&line.x2, &line.y2, 0);
+			line.x1 = width * 2 / 5 + round(points[i][j].x * scale);
+			line.y1 = hight * 1/5 + round(points[i][j].y * scale);
+			line.x2 = width * 2 / 5 + round(points[i][j - 1].x * scale);
+			line.y2 = hight * 1/5 + round(points[i][j - 1].y * scale);
+			iso(&line.x1, &line.y1, points[i][j].z * scale);
+			iso(&line.x2, &line.y2, points[i][j - 1].z * scale);
 			drow_line(line, &img);
 			// plotLine(line.x1, line.y1, line.x2, line.y2,&img);
 
-			line.x1 = right + (j - 1) * scale;
-			line.y1 = top + i * scale;
-			line.x2 = right + (j - 1) * scale;
-			line.y2 = top + (i + 1) * scale;
-			iso(&line.x1, &line.y1, 0);
-			iso(&line.x2, &line.y2, 0);
+			line.x1 = width * 2 / 5 + round(points[i][j].x * scale);
+			line.y1 = hight * 1/5 + round(points[i][j].y * scale);
+			line.x2 = width * 2 / 5 + round(points[i + 1][j].x * scale);
+			line.y2 = hight * 1/5 + round(points[i + 1][j].y * scale);
+			iso(&line.x1, &line.y1, points[i][j].z * scale);
+			iso(&line.x2, &line.y2, points[i+1][j].z * scale);
 			drow_line(line, &img);
+			// plotLine(line.x1, line.y1, line.x2, line.y2,&img);
+
 			// plotLine(right + 8 * j, top + 18 * i, right + 8 * (j + 1), top + 18 * (i + 1), &img);
 
 			// put_pixel(&img, right + 8 * j, top + 18 * i, 0x00CCCC00);
@@ -220,3 +258,33 @@ int main(int ac, char **av)
 	clear_x(&clear);
 	exit(0);
 }
+
+
+// for (int i = 0; i < map->hight; i++)
+// 	{
+// 		for (int j = 1; j < map->width; j++)
+// 		{
+// 			line.x1 = right + (j - 1) * scale;
+// 			line.y1 = top + i * scale;
+// 			line.x2 = right + j * scale;
+// 			line.y2 = top + i * scale;
+// 			z = map->points[i][j - 1].z;
+// 			iso(&line.x1, &line.y1, z);
+// 			iso(&line.x2, &line.y2, z);
+// 			// ft_printf("%i\n", map->points[j - 1][i].z);
+// 			drow_line(line, &img);
+// 			// plotLine(line.x1, line.y1, line.x2, line.y2,&img);
+
+// 			line.x1 = right + (j - 1) * scale;
+// 			line.y1 = top + i * scale;
+// 			line.x2 = right + (j - 1) * scale;
+// 			line.y2 = top + (i + 1) * scale;
+// 			z = map->points[i][j - 1].z;
+// 			iso(&line.x1, &line.y1, z);
+// 			iso(&line.x2, &line.y2, z);
+// 			drow_line(line, &img);
+// 			// plotLine(right + 8 * j, top + 18 * i, right + 8 * (j + 1), top + 18 * (i + 1), &img);
+
+// 			// put_pixel(&img, right + 8 * j, top + 18 * i, 0x00CCCC00);
+// 		}
+// 	}

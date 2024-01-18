@@ -39,8 +39,11 @@ void	put_pixel(t_data *data, int x, int y, unsigned int color)
 {
 	char	*dst;
 
-	dst = data->addr + (y * data->line_length + x * (data->bpp / 8));
-	*(unsigned int*)dst = color;
+	if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT)
+	{
+		dst = data->addr + (y * data->line_length + x * (data->bpp / 8));
+		*(unsigned int*)dst = color;
+	}
 }
 
 void fu()
@@ -48,19 +51,19 @@ void fu()
 	system("leaks fdf");
 }
 
-void	init(t_vars	*vars, t_data *img, int width, int hight)
+void	init(t_vars	*vars, t_data *img)
 {
 	vars->mlx = mlx_init();
 	if (!vars->mlx)
 		exit(1);
-	vars->win = mlx_new_window(vars->mlx, width, hight, "FDF");
+	vars->win = mlx_new_window(vars->mlx, WIDTH, HEIGHT, "FDF");
 	if (!vars->win)
 	{
 		//mlx_destroy_display(vars->mlx);
 		free(vars->mlx);
 		exit(1);
 	}
-	img->img = mlx_new_image(vars->mlx, width, hight);
+	img->img = mlx_new_image(vars->mlx, WIDTH, HEIGHT);
 	if (!img->img)
 	{
 		mlx_destroy_window(vars->mlx, vars->mlx);
@@ -103,7 +106,7 @@ void	print_map(t_map *map)
 	int y = 0;
 	t_point **points = map->points;
 
-	while (y < map->hight)
+	while (y < map->height)
 	{
 		x = 0;
 		while (x < map->width)
@@ -131,16 +134,70 @@ void plotLine(int x0, int y0, int x1, int y1, t_data *data)
    }
 }
 #include <math.h>
-static void iso(int *x, int *y, int z)
+
+void rotateZ(int *x, int *y, float angle) {
+    float cosTheta = cos(angle);
+    float sinTheta = sin(angle);
+    float px = *x;
+    float py = *y;
+
+	*x = px * cosTheta - py * sinTheta;
+	*y = px * sinTheta + py * cosTheta;
+}
+
+void rotateX(int *y, int *z, float angle) {
+    float cosTheta = cos(angle);
+    float sinTheta = sin(angle);
+    float py = *y;
+    float pz = *z;
+
+    *y = py * cosTheta - pz * sinTheta;
+    *z = py * sinTheta + pz * cosTheta;
+}
+
+void rotateY(int *x, int *z, float angle) {
+    float cosTheta = cos(angle);
+    float sinTheta = sin(angle);
+    float px = *x;
+    float pz = *z;
+
+    *x = px * cosTheta + pz * sinTheta;
+    *z = -px * sinTheta + pz * cosTheta;
+}
+
+static void iso_projection(int *x, int *y, int z)
 {
-    int previous_x;
+    int p_x;
+
+    p_x = *x;
+    *x = (p_x - *y) * cos(0.46373398);
+    *y = (p_x + *y) * sin(0.46373398) - z;
+	// M_PI / 6.0
+}
+
+void isometricProjection(int *x, int *y, int z) 
+{
+    // Isometric projection matrix
+    const float projectionMatrix[3][2] = {
+        {0.7071, -0.7071},
+        {0.7071, 0.7071},
+        {0, 0}
+    };
+	int previous_x;
     int previous_y;
 
     previous_x = *x;
     previous_y = *y;
-    *x = (previous_x - previous_y) * cos(0.46373398);
-    *y = (previous_x + previous_y) * sin(0.46373398) - z;
-	// 1.5707
+
+    // Rotate the input point around all three axes
+	// float angel = M_PI / 10;
+	// rotateX(&previous_y, &z,  M_PI / 4.0);
+	// rotateY(&previous_x, &z,  M_PI / 4.0);
+	// rotateZ(&previous_x, &previous_y,  M_PI / 4.0);
+
+    // Perform matrix-vector multiplication
+    *x = previous_x * projectionMatrix[0][0] + previous_y * projectionMatrix[1][0];
+    *y = previous_x * projectionMatrix[0][1] + previous_y * projectionMatrix[1][1];
 }
 
 // xFla = function (x, y, z) {
@@ -159,6 +216,94 @@ static void iso(int *x, int *y, int z)
 // 	yI = -yCart+yOrigin;
 // 	return (yI);
 // };
+
+int	min(int n1, int n2)
+{
+	if (n1 > n2)
+		return (n2);
+	return (n1);
+}
+
+int	max(int n1, int n2)
+{
+	if (n1 > n2)
+		return (n1);
+	return (n2);
+}
+
+void	rotate_y(int *x, int *z, float d)
+{
+	int	px = *x;
+
+	*x = px * cos(d) + *z * sin(d);
+	*z = (-1*px) * sin(d) + *z * cos(d);
+}
+
+typedef struct s_position
+{
+	int	scale;
+	int	right;
+	int	top;
+	int	left;
+	int	bottom;
+} t_position;
+
+int	get_zmax(t_point **points, int height, int width)
+{
+	int	i;
+	int	j;
+	int z_max;
+
+	i = 0;
+	j = 0;
+	z_max = 0;
+	while (i < height - 1)
+	{
+		j = 0;
+		while (j < width - 1)
+		{
+			if (z_max < points[i][j].z)
+				z_max = points[i][j].z;
+			j++;
+		}
+		i++;
+	}
+	return (z_max);
+}
+
+t_line get_line_1(int x, int y, t_point **points, t_position position)
+{
+	t_line	line;
+
+	line.x1 = (x * position.scale) - position.left;
+	line.y1 = (y * position.scale) - position.bottom;
+	iso_projection(&line.x1, &line.y1, points[y][x].z * position.scale);
+	line.x1 += position.right;
+	line.y1 += position.top;
+	line.x2 = ((x + 1) * position.scale) - position.left;
+	line.y2 = (y * position.scale) - position.bottom;
+	iso_projection(&line.x2, &line.y2, points[y][x + 1].z * position.scale);
+	line.x2 += position.right;
+	line.y2 += position.top;
+	return (line);
+}
+
+t_line get_line_2(int x, int y, t_point **points, t_position position)
+{
+	t_line	line;
+
+	line.x1 = (x * position.scale) - position.left;
+	line.y1 = (y * position.scale) - position.bottom;
+	iso_projection(&line.x1, &line.y1, points[y][x].z * position.scale);
+	line.x1 += position.right;
+	line.y1 += position.top;
+	line.x2 = (x * position.scale) - position.left;
+	line.y2 = ((y + 1) * position.scale) - position.bottom;
+	iso_projection(&line.x2, &line.y2, points[y + 1][x].z * position.scale);
+	line.x2 += position.right;
+	line.y2 += position.top;
+	return (line);
+}
 
 int main(int ac, char **av)
 {
@@ -181,75 +326,35 @@ int main(int ac, char **av)
 	clear.map = map;
 	clear.vars = &vars;
 
-	int width = 500;
-	int hight = 500;
-	float scale = 0.75 * hight / sqrt(pow(map->width, 2) + pow(map->hight, 2));
-	int max_z = 0;
-	t_point **points = map->points;
-
-	for (int i = 0; i < map->hight - 1; i++)
-	{
-		for (int j = map->width - 1; j > 0; j--)
-		{
-			if (map->points[i][j].z > max_z)
-				max_z = map->points[i][j].z;
-		}
-	}
-	
-	// int width = sqrt(pow(map->width * scale, 2) + pow(map->hight* scale, 2)) * 1.2;
-	// int hight = (map->hight + max_z) * scale * 1.5;
-	
-	ft_printf("%i %i\n", width, hight);
-
-	// init(&vars, &img);
-	init(&vars, &img, width, hight);
+	init(&vars, &img);
 	mlx_hook(vars.win, 3, 0, key_handler, &clear);
 	mlx_hook(vars.win, 17, 0, close_w, &clear);
 	
 	// start
+	int x;
+	int	y;
+	t_point **points = map->points;
+	t_position	position;
+	position.scale = min(WIDTH / map->width / 2, HEIGHT / map->width / 2);
+	position.right = WIDTH / 2 ;
+	position.top =  (HEIGHT + get_zmax(points, map->height, map->width) * position.scale) / 2;
+	position.left = (map->width * position.scale) / 2;
+	position.bottom = (map->height * position.scale) / 2;
 
-	t_line line;
-	// line.x1 = 200;
-	// line.y1 = 299;
-	// line.x2 = 333;
-	// line.y2 = 10;
-	// drow_line(line, &img);
-
-	ft_printf("%i %i\n", map->width, map->hight);
-	// int right = (WIDTH - map->width * 8) / 2;
-	// int top = (HIGHT - map->hight * 18) / 2;
-	int right = 0;
-	int top = 0;
-	int z;
-	
-	for (int i = 0; i < map->hight - 1; i++)
+	y = 0;
+	while (y < map->height)
 	{
-		for (int j = map->width - 1; j > 0; j--)
+		x = 0;
+		while (x < map->width)
 		{
-			line.x1 = width * 2 / 5 + round(points[i][j].x * scale);
-			line.y1 = hight * 1/5 + round(points[i][j].y * scale);
-			line.x2 = width * 2 / 5 + round(points[i][j - 1].x * scale);
-			line.y2 = hight * 1/5 + round(points[i][j - 1].y * scale);
-			iso(&line.x1, &line.y1, points[i][j].z * scale);
-			iso(&line.x2, &line.y2, points[i][j - 1].z * scale);
-			drow_line(line, &img);
-			// plotLine(line.x1, line.y1, line.x2, line.y2,&img);
-
-			line.x1 = width * 2 / 5 + round(points[i][j].x * scale);
-			line.y1 = hight * 1/5 + round(points[i][j].y * scale);
-			line.x2 = width * 2 / 5 + round(points[i + 1][j].x * scale);
-			line.y2 = hight * 1/5 + round(points[i + 1][j].y * scale);
-			iso(&line.x1, &line.y1, points[i][j].z * scale);
-			iso(&line.x2, &line.y2, points[i+1][j].z * scale);
-			drow_line(line, &img);
-			// plotLine(line.x1, line.y1, line.x2, line.y2,&img);
-
-			// plotLine(right + 8 * j, top + 18 * i, right + 8 * (j + 1), top + 18 * (i + 1), &img);
-
-			// put_pixel(&img, right + 8 * j, top + 18 * i, 0x00CCCC00);
+			if (x != map->width - 1)
+				drow_line(get_line_1(x, y, points, position), &img);
+			if (y != map->height - 1)
+				drow_line(get_line_2(x, y, points, position), &img);
+			x++;
 		}
+		y++;
 	}
-	// exit(0);
 
 	// end
 	mlx_put_image_to_window(vars.mlx , vars.win, vars.img->img, 0, 0);
@@ -258,33 +363,3 @@ int main(int ac, char **av)
 	clear_x(&clear);
 	exit(0);
 }
-
-
-// for (int i = 0; i < map->hight; i++)
-// 	{
-// 		for (int j = 1; j < map->width; j++)
-// 		{
-// 			line.x1 = right + (j - 1) * scale;
-// 			line.y1 = top + i * scale;
-// 			line.x2 = right + j * scale;
-// 			line.y2 = top + i * scale;
-// 			z = map->points[i][j - 1].z;
-// 			iso(&line.x1, &line.y1, z);
-// 			iso(&line.x2, &line.y2, z);
-// 			// ft_printf("%i\n", map->points[j - 1][i].z);
-// 			drow_line(line, &img);
-// 			// plotLine(line.x1, line.y1, line.x2, line.y2,&img);
-
-// 			line.x1 = right + (j - 1) * scale;
-// 			line.y1 = top + i * scale;
-// 			line.x2 = right + (j - 1) * scale;
-// 			line.y2 = top + (i + 1) * scale;
-// 			z = map->points[i][j - 1].z;
-// 			iso(&line.x1, &line.y1, z);
-// 			iso(&line.x2, &line.y2, z);
-// 			drow_line(line, &img);
-// 			// plotLine(right + 8 * j, top + 18 * i, right + 8 * (j + 1), top + 18 * (i + 1), &img);
-
-// 			// put_pixel(&img, right + 8 * j, top + 18 * i, 0x00CCCC00);
-// 		}
-// 	}

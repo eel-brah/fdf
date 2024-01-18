@@ -48,7 +48,7 @@ void	free_map(t_map *map)
 
 	i = 0;
 	points = map->points;
-	while (i < map->hight)
+	while (i < map->height)
 		free(points[i++]);
 	free(points);
 	free(map);
@@ -229,11 +229,11 @@ t_map	*map_allocation(char **lines)
 		free_lines(lines);
 		return (NULL);
 	}
-	map->hight = lines_count(lines);
-	map->points = pr_malloc(map->hight, sizeof(t_point *));
-	if (!map->points || !map->hight)
+	map->height = lines_count(lines);
+	map->points = pr_malloc(map->height, sizeof(t_point *));
+	if (!map->points || !map->height)
 	{
-		if (!map->hight)
+		if (!map->height)
 			ft_printf("Invalid map\n");
 		free(map->points);
 		free_lines(lines);
@@ -260,7 +260,7 @@ t_map *gen_map(int fd)
 	if (y != -1)
 	{
 		free_lines(lines);
-		map->hight = y;
+		map->height = y;
 		free_map(map);
 		return (NULL);
 	}

@@ -13,8 +13,8 @@
 #ifndef FDF_H
 # define FDF_H
 
-# define WIDTH 500
-# define HIGHT 500
+# define WIDTH 1000
+# define HEIGHT 1000
 
 # include <mlx.h>
 # include <libc.h>
@@ -31,7 +31,7 @@ typedef struct s_point
 typedef	struct s_map
 {
 	int		width;
-	int		hight;
+	int		height;
 	t_point	**points;
 }	t_map;
 

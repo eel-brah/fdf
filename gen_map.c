@@ -126,9 +126,9 @@ char	**split_line(char *line, int *len, int width)
 	return (s);
 }
 
-int	hex_to_int(char *h)
+unsigned int	hex_to_int(char *h)
 {
-	int		nbr;
+	unsigned int		nbr;
 	char	*hex;
 	int		i;
 	char	c;
@@ -147,7 +147,7 @@ int	hex_to_int(char *h)
 	return (nbr);
 }
 
-char	*get_color(int *color, char *s)
+char	*get_color(unsigned int *color, char *s)
 {
 	char	**c;
 
@@ -159,7 +159,7 @@ char	*get_color(int *color, char *s)
 		if (!ft_strncmp(c[1], "0x", 2))
 			*color = hex_to_int(c[1]);
 		else
-			*color = ft_atoi(c[1]);
+			*color = (unsigned int)ft_atoi(c[1]);
 	}
 	else
 		*color = 16777215;

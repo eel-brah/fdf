@@ -41,7 +41,7 @@ int	key_handler(int keysym, t_args *args)
 	if (keysym == 124 || keysym == 2)
 	{
 		args->map->state.x_poz++;
-		// right
+  		// right
 	}
 	if (keysym == 125 || keysym == 13)
 	{
@@ -197,34 +197,34 @@ void plotLine(int x0, int y0, int x1, int y1, t_data *data)
 }
 #include <math.h>
 
-void rotateZ(int *x, int *y, float angle) {
-    float cosTheta = cos(angle);
-    float sinTheta = sin(angle);
+void rotate_z(int *x, int *y, float angle) {
+    float cos_a = cos(angle);
+    float sin_a = sin(angle);
     float px = *x;
     float py = *y;
 
-	*x = px * cosTheta - py * sinTheta;
-	*y = px * sinTheta + py * cosTheta;
+	*x = round(px * cos_a - py * sin_a);
+	*y = round(px * sin_a + py * cos_a);
 }
 
-void rotateX(int *y, int *z, float angle) {
-    float cosTheta = cos(angle);
-    float sinTheta = sin(angle);
+void rotate_x(int *y, int *z, float angle) {
+    float cos_a = cos(angle);
+    float sin_a = sin(angle);
     float py = *y;
     float pz = *z;
 
-    *y = py * cosTheta - pz * sinTheta;
-    *z = py * sinTheta + pz * cosTheta;
+    *y = round(py * cos_a - pz * sin_a);
+    *z = round(py * sin_a + pz * cos_a);
 }
 
-void rotateY(int *x, int *z, float angle) {
-    float cosTheta = cos(angle);
-    float sinTheta = sin(angle);
+void rotate_y(int *x, int *z, float angle) {
+    float cos_a = cos(angle);
+    float sin_a = sin(angle);
     float px = *x;
     float pz = *z;
 
-    *x = px * cosTheta + pz * sinTheta;
-    *z = -px * sinTheta + pz * cosTheta;
+    *x = round(px * cos_a + pz * sin_a);
+    *z = round(-px * sin_a + pz * cos_a);
 }
 
 void iso_projection(int *x, int *y, int z)
@@ -232,34 +232,13 @@ void iso_projection(int *x, int *y, int z)
     int p_x;
 
     p_x = *x;
+	rotate_z(&p_x, y, -1.58);
+	// *x= p_x - *y;
+    // *y= round((p_x + *y) / 2.0 - z);
     *x = (p_x - *y) * cos(0.46373398);
     *y = (p_x + *y) * sin(0.46373398) - z;
-	// M_PI / 6.0
-}
-
-void isometricProjection(int *x, int *y, int z) 
-{
-    // Isometric projection matrix
-    const float projectionMatrix[3][2] = {
-        {0.7071, -0.7071},
-        {0.7071, 0.7071},
-        {0, 0}
-    };
-	int previous_x;
-    int previous_y;
-
-    previous_x = *x;
-    previous_y = *y;
-
-    // Rotate the input point around all three axes
-	// float angel = M_PI / 10;
-	// rotateX(&previous_y, &z,  M_PI / 4.0);
-	// rotateY(&previous_x, &z,  M_PI / 4.0);
-	// rotateZ(&previous_x, &previous_y,  M_PI / 4.0);
-
-    // Perform matrix-vector multiplication
-    *x = previous_x * projectionMatrix[0][0] + previous_y * projectionMatrix[1][0];
-    *y = previous_x * projectionMatrix[0][1] + previous_y * projectionMatrix[1][1];
+	// *x = round((double)(p_x - *y) * cos(M_PI / 4.0));
+    // *y = round((double)(p_x + *y - 2 * z) * (sin(M_PI / 4.0) / sqrt(2)));
 }
 
 
@@ -310,18 +289,20 @@ t_line get_line_1(int x, int y, t_map *map, t_position position)
 	line.x1 = (x * map->state.scale) - position.left;
 	line.y1 = (y * map->state.scale) - position.bottom;
 	z = points[y][x].z * map->state.scale;
-	rotateX(&line.y1, &z, map->state.x_rot);
-	rotateY(&line.x1, &z, map->state.y_rot);
-	rotateZ(&line.x1, &line.y1, map->state.z_rot);
+	line.color1 = points[y][x].color;
+	rotate_x(&line.y1, &z, map->state.x_rot);
+	rotate_y(&line.x1, &z, map->state.y_rot);
+	rotate_z(&line.x1, &line.y1, map->state.z_rot);
 	iso_projection(&line.x1, &line.y1, z);
 	line.x1 += position.right;
 	line.y1 += position.top;
 	line.x2 = ((x + 1) * map->state.scale) - position.left;
 	line.y2 = (y * map->state.scale) - position.bottom;
 	z = points[y][x + 1].z * map->state.scale;
-	rotateX(&line.y2, &z, map->state.x_rot);
-	rotateY(&line.x2, &z, map->state.y_rot);
-	rotateZ(&line.x2, &line.y2, map->state.z_rot);
+	line.color2 = points[y][x + 1].color;
+	rotate_x(&line.y2, &z, map->state.x_rot);
+	rotate_y(&line.x2, &z, map->state.y_rot);
+	rotate_z(&line.x2, &line.y2, map->state.z_rot);
 	iso_projection(&line.x2, &line.y2, z);
 	line.x2 += position.right;
 	line.y2 += position.top;
@@ -338,18 +319,20 @@ t_line get_line_2(int x, int y, t_map *map, t_position position)
 	line.x1 = (x * map->state.scale) - position.left;
 	line.y1 = (y * map->state.scale) - position.bottom;
 	z = points[y][x].z * map->state.scale;
-	rotateX(&line.y1, &z, map->state.x_rot);
-	rotateY(&line.x1, &z, map->state.y_rot);
-	rotateZ(&line.x1, &line.y1, map->state.z_rot);
+	line.color1 = points[y][x].color;
+	rotate_x(&line.y1, &z, map->state.x_rot);
+	rotate_y(&line.x1, &z, map->state.y_rot);
+	rotate_z(&line.x1, &line.y1, map->state.z_rot);
 	iso_projection(&line.x1, &line.y1, z);
 	line.x1 += position.right;
 	line.y1 += position.top;
 	line.x2 = (x * map->state.scale) - position.left;
 	line.y2 = ((y + 1) * map->state.scale) - position.bottom;
 	z = points[y + 1][x].z * map->state.scale;
-	rotateX(&line.y2, &z, map->state.x_rot);
-	rotateY(&line.x2, &z, map->state.y_rot);
-	rotateZ(&line.x2, &line.y2, map->state.z_rot);
+	line.color2 = points[y + 1][x].color;
+	rotate_x(&line.y2, &z, map->state.x_rot);
+	rotate_y(&line.x2, &z, map->state.y_rot);
+	rotate_z(&line.x2, &line.y2, map->state.z_rot);
 	iso_projection(&line.x2, &line.y2, z);
 	line.x2 += position.right;
 	line.y2 += position.top;
@@ -409,7 +392,7 @@ void	draw_map(t_map *map, t_data *img, t_vars *vars)
 
 int main(int ac, char **av)
 {
-	atexit(fu);
+	// atexit(fu);
 	t_vars	vars;
 	t_data	img;
 	t_map	*map;

@@ -18,6 +18,7 @@
 
 # include <mlx.h>
 # include <libc.h>
+# include <math.h>
 # include "libft/libft.h"
 
 typedef struct s_point
@@ -25,7 +26,7 @@ typedef struct s_point
 	int	x;
 	int	y;
 	int	z;
-	int	color;
+	unsigned int	color;
 }	t_point;
 
 typedef struct s_position
@@ -94,6 +95,8 @@ typedef struct s_line
 	int	y1;
 	int	x2;
 	int	y2;
+	unsigned int	color1;
+	unsigned int	color2;
 }	t_line;
 
 typedef struct s_delta
@@ -107,4 +110,6 @@ typedef struct s_delta
 void	drow_line(t_line line, t_data *img);
 void	draw_map(t_map *map, t_data *img, t_vars *vars);
 int	min(int n1, int n2);
+unsigned int	*gen_gradient(unsigned int c1, unsigned int c2, int num);
+int close_w(t_args *args);
 #endif

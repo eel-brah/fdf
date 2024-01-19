@@ -70,6 +70,8 @@ typedef struct s_line
 	int	y1;
 	int	x2;
 	int	y2;
+	int color1;
+	int color2;
 }	t_line;
 
 typedef struct s_delta
@@ -101,18 +103,57 @@ void slop(t_line line, t_delta *delta)
 // 	line.x2 = 36;
 // 	line.y2 = 105;
 // dx = 7 | dx = 4
+#include <math.h>
+unsigned int	calc_color(double c1, double c2, double per)
+{
+    return (round((c1 + (c2 - c1) * per)));
+}
+
+unsigned int merge_colors(unsigned int c1, unsigned int c2, double per) 
+{
+	int	red;
+	int	green;
+	int	blue;
+
+    red = calc_color((c1 >> 16) & 0xFF, (c2 >> 16) & 0xFF, per);
+    green = calc_color((c1 >> 8) & 0xFF, (c2 >> 8) & 0xFF, per);
+    blue = calc_color(c1 & 0xFF, c2 & 0xFF, per);
+    return ((red << 16) | (green << 8) | blue);
+}
+
+
+unsigned int	*gen_gradient(unsigned int c1, unsigned int c2, int num) 
+{
+	unsigned int *gradient;
+	int			i;
+	double		color_per;
+	int			color;
+
+	gradient = malloc(sizeof(int) * num);
+	if(!gradient)
+		return (NULL); // NULL
+	i = 1;
+    while (i <= num) 
+	{
+        color_per = (double)i / num;
+        color = merge_colors(c1, c2, color_per);
+		gradient[i++] = color;
+    }
+	return (gradient);
+}
 void	drow_line(t_line line, t_data *img)
 {
 	t_delta	delta;
+	unsigned int *array;
 
 	slop(line, &delta);
 	if (delta.dx > delta.dy)
 	{
-		printf("%i %i\n", delta.dx, delta.dy);
+		array = gen_gradient(line.color1, line.color2, delta.dx);
 		delta.d = 2 * delta.dy - delta.dx;
 		for (int i = 0; i < delta.dx; i++)
 		{
-			my_mlx_pixel_put(img, line.x1, line.y1, 0x00CCCC00);
+			my_mlx_pixel_put(img, line.x1, line.y1, array[i]);
 			line.x1 += delta.xs;
 			if (delta.d < 0)
 				delta.d += (2 * delta.dy);
@@ -125,12 +166,11 @@ void	drow_line(t_line line, t_data *img)
 	}
 	else
 	{
-		printf("dd\n");
-
+		array = gen_gradient(line.color1, line.color2, delta.dy);
 		delta.d = 2 * delta.dx - delta.dy;
 		for (int i = 0; i < delta.dy; i++)
 		{
-			my_mlx_pixel_put(img, line.x1, line.y1, 0x00CCCC00);
+			my_mlx_pixel_put(img, line.x1, line.y1, array[i]);
 			line.y1 += delta.ys;
 			if (delta.d < 0)
 				delta.d += (2 * delta.dx);
@@ -158,6 +198,9 @@ void plotLine(int x0, int y0, int x1, int y1, t_data *data)
    }
 }
 
+
+
+
 int	main(void)
 {
 	t_data	img;
@@ -184,14 +227,16 @@ int	main(void)
 
 	// plotLine(300, 300, 300, 50, &img);
 	t_line line;
-	line.x1 = 29;
-	line.y1 = 101;
-	line.x2 = 36;
-	line.y2 = 105;
-	plotLine(29, 101, 36, 105, &img);
-	drow_line(line, &img2);
+	line.x1 = 50;
+	line.y1 = 50;
+	line.x2 = 290;
+	line.y2 = 290;
+	line.color1 = 0xfca311;
+	line.color2 = 0x0077b6;
+	// plotLine(29, 101, 36, 105, &img);
+	drow_line(line, &img);
 	mlx_put_image_to_window(vars.mlx , vars.win, img.img, 0, 0);
-	mlx_put_image_to_window(vars.mlx , vars.win, img2.img, 500, 500);
+	// mlx_put_image_to_window(vars.mlx , vars.win, img2.img, 500, 500);
 
 	
 	mlx_loop(vars.mlx);

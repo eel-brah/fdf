@@ -28,11 +28,31 @@ typedef struct s_point
 	int	color;
 }	t_point;
 
+typedef struct s_position
+{
+	int	scale;
+	int	right;
+	int	top;
+	int	left;
+	int	bottom;
+}	t_position;
+
+typedef struct s_state
+{
+	int	x_poz;
+	int	y_poz;
+	int	scale;
+	float	x_rot;
+	float	y_rot;
+	float	z_rot;
+}	t_state;
+
 typedef	struct s_map
 {
 	int		width;
 	int		height;
 	t_point	**points;
+	t_state	state;
 }	t_map;
 
 typedef struct s_data {
@@ -50,12 +70,12 @@ typedef struct s_vars
 	t_data	*img;
 }	t_vars;
 
-typedef struct s_clear
+typedef struct s_args
 {
 	t_vars	*vars;
 	t_map	*map;
 	int		fd;
-}	t_clear;
+}	t_args;
 
 typedef struct s_buffer
 {
@@ -85,4 +105,6 @@ typedef struct s_delta
 	int	ys;
 }	t_delta;
 void	drow_line(t_line line, t_data *img);
+void	draw_map(t_map *map, t_data *img, t_vars *vars);
+int	min(int n1, int n2);
 #endif

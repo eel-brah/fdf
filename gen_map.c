@@ -243,6 +243,16 @@ t_map	*map_allocation(char **lines)
 	return (map);
 }
 
+void	init_state(t_map *map)
+{
+	map->state.x_poz = 0;
+	map->state.y_poz = 0;
+	map->state.scale = min(WIDTH / map->width / 2, HEIGHT / map->width / 2);
+	map->state.x_rot = 0;
+	map->state.y_rot = 0;
+	map->state.z_rot = 0;
+}
+
 t_map *gen_map(int fd)
 {
 	char	**lines;
@@ -264,6 +274,7 @@ t_map *gen_map(int fd)
 		free_map(map);
 		return (NULL);
 	}
+	init_state(map);
 	free_lines(lines); 
 	return (map);
 }

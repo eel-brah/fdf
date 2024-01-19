@@ -12,26 +12,88 @@
 
 #include "fdf.h"
 
-void	clear_x(t_clear *clear)
+void	clear_x(t_args *args)
 {
-	free_map(clear->map);
-	close(clear->fd);
-	mlx_destroy_image(clear->vars->mlx, clear->vars->img->img);
-	mlx_destroy_window(clear->vars->mlx, clear->vars->win);
-	//mlx_destroy_display(clear->vars.mlx);
-	// free(clear->vars->mlx);
+	free_map(args->map);
+	close(args->fd);
+	mlx_destroy_image(args->vars->mlx, args->vars->img->img);
+	mlx_destroy_window(args->vars->mlx, args->vars->win);
+	//mlx_destroy_display(args->vars.mlx);
+	// free(args->vars->mlx);
 }
 
-int close_w(t_clear *clear)
+int close_w(t_args *args)
 {
-	clear_x(clear);
+	clear_x(args);
 	exit(0);
 }
 
-int	key_handler(int keysym, t_clear *clear)
+int	key_handler(int keysym, t_args *args)
 {
+	// ft_printf("%i\n", keysym);
 	if (keysym == 53)
-		close_w(clear);
+		close_w(args);
+	if (keysym == 123 || keysym == 0)
+	{
+		args->map->state.x_poz--;
+		// left
+	}
+	if (keysym == 124 || keysym == 2)
+	{
+		args->map->state.x_poz++;
+		// right
+	}
+	if (keysym == 125 || keysym == 13)
+	{
+		args->map->state.y_poz++;
+		// up
+	}
+	if (keysym == 126 || keysym == 1)
+	{
+		args->map->state.y_poz--;
+		//down
+	}
+	if (keysym == 34 || keysym == 69)
+	{
+		args->map->state.scale++;
+		//in
+	}
+	if ((keysym == 31 || keysym == 78) && args->map->state.scale > 1)
+	{
+		args->map->state.scale--;
+		//out
+	}
+	if (keysym == 18 || keysym == 83)
+	{
+		args->map->state.x_rot += 0.01;
+		//x
+	}
+	if (keysym == 19 || keysym == 84)
+	{
+		args->map->state.x_rot -= 0.01;
+		//x
+	}
+	if (keysym == 20 || keysym == 85)
+	{
+		args->map->state.y_rot += 0.01;
+		//y
+	}
+	if (keysym == 21 || keysym == 86)
+	{
+		args->map->state.y_rot -= 0.01;
+		//y
+	}
+	if (keysym == 23 || keysym == 87)
+	{
+		args->map->state.z_rot += 0.01;
+		//z
+	}
+	if (keysym == 22 || keysym == 88)
+	{
+		args->map->state.z_rot -= 0.01;
+		//z
+	}
+	draw_map(args->map, args->vars->img, args->vars);
 	return (0);
 }
 
@@ -165,7 +227,7 @@ void rotateY(int *x, int *z, float angle) {
     *z = -px * sinTheta + pz * cosTheta;
 }
 
-static void iso_projection(int *x, int *y, int z)
+void iso_projection(int *x, int *y, int z)
 {
     int p_x;
 
@@ -200,22 +262,6 @@ void isometricProjection(int *x, int *y, int z)
     *y = previous_x * projectionMatrix[0][1] + previous_y * projectionMatrix[1][1];
 }
 
-// xFla = function (x, y, z) {
-// 	// cartesian coordinates
-// 	xCart = (x-z)*Math.cos(0.46365);
-// 	// flash coordinates
-// 	xI = xCart+xOrigin;
-// 	return (xI);
-// };
- 
-// // transforms x,y,z coordinates into Flash y coordinate
-// yFla = function (x, y, z) {
-// 	// cartesian coordinates
-// 	yCart = y+(x+z)*Math.sin(0.46365);
-// 	// flash coordinates
-// 	yI = -yCart+yOrigin;
-// 	return (yI);
-// };
 
 int	min(int n1, int n2)
 {
@@ -231,23 +277,6 @@ int	max(int n1, int n2)
 	return (n2);
 }
 
-void	rotate_y(int *x, int *z, float d)
-{
-	int	px = *x;
-
-	*x = px * cos(d) + *z * sin(d);
-	*z = (-1*px) * sin(d) + *z * cos(d);
-}
-
-typedef struct s_position
-{
-	int	scale;
-	int	right;
-	int	top;
-	int	left;
-	int	bottom;
-} t_position;
-
 int	get_zmax(t_point **points, int height, int width)
 {
 	int	i;
@@ -257,10 +286,10 @@ int	get_zmax(t_point **points, int height, int width)
 	i = 0;
 	j = 0;
 	z_max = 0;
-	while (i < height - 1)
+	while (i < height)
 	{
 		j = 0;
-		while (j < width - 1)
+		while (j < width)
 		{
 			if (z_max < points[i][j].z)
 				z_max = points[i][j].z;
@@ -271,48 +300,121 @@ int	get_zmax(t_point **points, int height, int width)
 	return (z_max);
 }
 
-t_line get_line_1(int x, int y, t_point **points, t_position position)
+t_line get_line_1(int x, int y, t_map *map, t_position position)
 {
 	t_line	line;
+	t_point	**points;
+	int		z;
 
-	line.x1 = (x * position.scale) - position.left;
-	line.y1 = (y * position.scale) - position.bottom;
-	iso_projection(&line.x1, &line.y1, points[y][x].z * position.scale);
+	points = map->points;
+	line.x1 = (x * map->state.scale) - position.left;
+	line.y1 = (y * map->state.scale) - position.bottom;
+	z = points[y][x].z * map->state.scale;
+	rotateX(&line.y1, &z, map->state.x_rot);
+	rotateY(&line.x1, &z, map->state.y_rot);
+	rotateZ(&line.x1, &line.y1, map->state.z_rot);
+	iso_projection(&line.x1, &line.y1, z);
 	line.x1 += position.right;
 	line.y1 += position.top;
-	line.x2 = ((x + 1) * position.scale) - position.left;
-	line.y2 = (y * position.scale) - position.bottom;
-	iso_projection(&line.x2, &line.y2, points[y][x + 1].z * position.scale);
+	line.x2 = ((x + 1) * map->state.scale) - position.left;
+	line.y2 = (y * map->state.scale) - position.bottom;
+	z = points[y][x + 1].z * map->state.scale;
+	rotateX(&line.y2, &z, map->state.x_rot);
+	rotateY(&line.x2, &z, map->state.y_rot);
+	rotateZ(&line.x2, &line.y2, map->state.z_rot);
+	iso_projection(&line.x2, &line.y2, z);
 	line.x2 += position.right;
 	line.y2 += position.top;
 	return (line);
 }
 
-t_line get_line_2(int x, int y, t_point **points, t_position position)
+t_line get_line_2(int x, int y, t_map *map, t_position position)
 {
 	t_line	line;
+	t_point	**points;
+	int		z;
 
-	line.x1 = (x * position.scale) - position.left;
-	line.y1 = (y * position.scale) - position.bottom;
-	iso_projection(&line.x1, &line.y1, points[y][x].z * position.scale);
+	points = map->points;
+	line.x1 = (x * map->state.scale) - position.left;
+	line.y1 = (y * map->state.scale) - position.bottom;
+	z = points[y][x].z * map->state.scale;
+	rotateX(&line.y1, &z, map->state.x_rot);
+	rotateY(&line.x1, &z, map->state.y_rot);
+	rotateZ(&line.x1, &line.y1, map->state.z_rot);
+	iso_projection(&line.x1, &line.y1, z);
 	line.x1 += position.right;
 	line.y1 += position.top;
-	line.x2 = (x * position.scale) - position.left;
-	line.y2 = ((y + 1) * position.scale) - position.bottom;
-	iso_projection(&line.x2, &line.y2, points[y + 1][x].z * position.scale);
+	line.x2 = (x * map->state.scale) - position.left;
+	line.y2 = ((y + 1) * map->state.scale) - position.bottom;
+	z = points[y + 1][x].z * map->state.scale;
+	rotateX(&line.y2, &z, map->state.x_rot);
+	rotateY(&line.x2, &z, map->state.y_rot);
+	rotateZ(&line.x2, &line.y2, map->state.z_rot);
+	iso_projection(&line.x2, &line.y2, z);
 	line.x2 += position.right;
 	line.y2 += position.top;
 	return (line);
+}
+
+void	background(t_map *map, t_data *img)
+{
+	int x;
+	int	y;
+	t_point **points = map->points;
+	y = 0;
+	while (y < HEIGHT)
+	{
+		x = 0;
+		while (x < WIDTH)
+		{
+			put_pixel(img, x, y, 0x00212529);
+			x++;
+		}
+		y++;
+	}
+}
+
+void	get_position(t_position *position, t_map *map)
+{
+	position->right = WIDTH / 2 + map->state.x_poz * map->state.scale;
+	position->top =  (HEIGHT + get_zmax(map->points, map->height, map->width) * map->state.scale) / 2 + map->state.y_poz * map->state.scale;
+	position->left = (map->width * map->state.scale) / 2;
+	position->bottom = (map->height * map->state.scale) / 2;
+}
+
+void	draw_map(t_map *map, t_data *img, t_vars *vars)
+{
+	int			x;
+	int			y;
+	t_position	position;
+
+	background(map, img);
+	get_position(&position, map);
+	y = 0;
+	while (y < map->height)
+	{
+		x = 0;
+		while (x < map->width)
+		{
+			if (x != map->width - 1)
+				drow_line(get_line_1(x, y, map, position), img);
+			if (y != map->height - 1)
+				drow_line(get_line_2(x, y, map, position), img);
+			x++;
+		}
+		y++;
+	}
+	mlx_put_image_to_window(vars->mlx , vars->win, vars->img->img, 0, 0);
 }
 
 int main(int ac, char **av)
 {
-	//atexit(fu);
+	atexit(fu);
 	t_vars	vars;
 	t_data	img;
 	t_map	*map;
 	int		fd;
-	t_clear	clear;
+	t_args	args;
 
 	fd = check_args(ac, av);
 	map = gen_map(fd);
@@ -322,44 +424,17 @@ int main(int ac, char **av)
 		return 1;
 	}
 	// print_map(map);
-	clear.fd = fd;
-	clear.map = map;
-	clear.vars = &vars;
+	args.fd = fd;
+	args.map = map;
+	args.vars = &vars;
 
 	init(&vars, &img);
-	mlx_hook(vars.win, 3, 0, key_handler, &clear);
-	mlx_hook(vars.win, 17, 0, close_w, &clear);
-	
-	// start
-	int x;
-	int	y;
-	t_point **points = map->points;
-	t_position	position;
-	position.scale = min(WIDTH / map->width / 2, HEIGHT / map->width / 2);
-	position.right = WIDTH / 2 ;
-	position.top =  (HEIGHT + get_zmax(points, map->height, map->width) * position.scale) / 2;
-	position.left = (map->width * position.scale) / 2;
-	position.bottom = (map->height * position.scale) / 2;
+	mlx_hook(vars.win, 3, 0, key_handler, &args);
+	mlx_hook(vars.win, 17, 0, close_w, &args);
 
-	y = 0;
-	while (y < map->height)
-	{
-		x = 0;
-		while (x < map->width)
-		{
-			if (x != map->width - 1)
-				drow_line(get_line_1(x, y, points, position), &img);
-			if (y != map->height - 1)
-				drow_line(get_line_2(x, y, points, position), &img);
-			x++;
-		}
-		y++;
-	}
-
-	// end
-	mlx_put_image_to_window(vars.mlx , vars.win, vars.img->img, 0, 0);
+	draw_map(map, &img, &vars);
 	mlx_loop(vars.mlx);
 	
-	clear_x(&clear);
+	clear_x(&args);
 	exit(0);
 }

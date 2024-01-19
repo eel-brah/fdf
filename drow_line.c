@@ -87,7 +87,7 @@ void	drow_line(t_line line, t_data *img)
 			}
 		}
 	}
-	// free(gradient);
+	free(gradient);
 }
 
 unsigned int	calc_color(double c1, double c2, double per)
@@ -107,7 +107,6 @@ unsigned int merge_colors(unsigned int c1, unsigned int c2, double per)
     return ((red << 16) | (green << 8) | blue);
 }
 
-
 unsigned int	*gen_gradient(unsigned int c1, unsigned int c2, int num) 
 {
 	unsigned int *gradient;
@@ -123,7 +122,8 @@ unsigned int	*gen_gradient(unsigned int c1, unsigned int c2, int num)
 	{
         color_per = (double)i / num;
         color = merge_colors(c1, c2, color_per);
-		gradient[i++] = color;
+		// ft_printf("%u\n", color);
+		gradient[i++ - 1] = color;
     }
 	return (gradient);
 }

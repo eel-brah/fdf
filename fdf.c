@@ -28,72 +28,128 @@ int close_w(t_args *args)
 	exit(0);
 }
 
+void	movement(int keysym, t_args *args)
+{
+	if (keysym == 123 || keysym == 0)
+		args->map->state.x_poz--;
+	else if (keysym == 124 || keysym == 2)
+		args->map->state.x_poz++;
+	else if (keysym == 125 || keysym == 13)
+		args->map->state.y_poz++;
+	else if (keysym == 126 || keysym == 1)
+		args->map->state.y_poz--;
+}
+
+void	rotate(int keysym, t_args *args)
+{
+	if (keysym == 18 || keysym == 83)
+		args->map->state.x_rot += 0.01;
+	if (keysym == 19 || keysym == 84)
+		args->map->state.x_rot -= 0.01;
+	if (keysym == 20 || keysym == 85)
+		args->map->state.y_rot += 0.01;
+	if (keysym == 21 || keysym == 86)
+		args->map->state.y_rot -= 0.01;
+	if (keysym == 23 || keysym == 87)
+		args->map->state.z_rot += 0.01;
+	if (keysym == 22 || keysym == 88)
+		args->map->state.z_rot -= 0.01;
+}
+
+void	z_scale(int keysym, t_args *args)
+{
+	if (keysym == 24 && args->map->state.z_scale < 20)
+		args->map->state.z_scale += 0.1;
+	if (keysym == 27 && args->map->state.z_scale > 1)
+		args->map->state.z_scale -= 0.1;
+}
+void	zoom(int keysym, t_args *args)
+{
+	if (keysym == 34 || keysym == 69)
+		args->map->state.scale++;
+	if ((keysym == 31 || keysym == 78) && args->map->state.scale > 1)
+		args->map->state.scale--;
+}
+
+void	change_colors(int keysym, t_args *args)
+{
+	int	i;
+	int	j;
+	int r;
+
+	r = 1000;
+	i = 0;
+	if (keysym == 8 || keysym == 9)
+	{
+		if (keysym == 9)
+			r *= -1;
+		while (i < args->map->height)
+		{
+			j = 0;
+			while (j < args->map->width)
+				args->map->points[i][j++].color += r; 
+			i++;
+		}
+	}
+}
+
+void	change_state(int keysym, t_args *args)
+{
+	args->map->state.keysym = keysym;
+	movement(keysym, args);
+	zoom(keysym, args);
+	rotate(keysym, args);
+	z_scale(keysym, args);
+	change_colors(keysym, args);
+	
+	ft_printf("%i\n", keysym);
+	draw_map(args->map, args->vars->img, args->vars);
+}
+
 int	key_handler(int keysym, t_args *args)
 {
-	// ft_printf("%i\n", keysym);
+	ft_printf("%i\n", keysym);
 	if (keysym == 53)
 		close_w(args);
-	if (keysym == 123 || keysym == 0)
+	else if (keysym == 82 || keysym == 15)
 	{
-		args->map->state.x_poz--;
-		// left
+		init_state(args->map);
+		draw_map(args->map, args->vars->img, args->vars);
 	}
-	if (keysym == 124 || keysym == 2)
+	else if(keysym == 49)
 	{
-		args->map->state.x_poz++;
-  		// right
+		if (args->map->state.lock == 0)
+			args->map->state.lock = 1;
+		else
+			args->map->state.lock = 0;
 	}
-	if (keysym == 125 || keysym == 13)
-	{
-		args->map->state.y_poz++;
-		// up
-	}
-	if (keysym == 126 || keysym == 1)
-	{
-		args->map->state.y_poz--;
-		//down
-	}
-	if (keysym == 34 || keysym == 69)
-	{
-		args->map->state.scale++;
-		//in
-	}
-	if ((keysym == 31 || keysym == 78) && args->map->state.scale > 1)
-	{
-		args->map->state.scale--;
-		//out
-	}
-	if (keysym == 18 || keysym == 83)
-	{
-		args->map->state.x_rot += 0.01;
-		//x
-	}
-	if (keysym == 19 || keysym == 84)
-	{
-		args->map->state.x_rot -= 0.01;
-		//x
-	}
-	if (keysym == 20 || keysym == 85)
-	{
-		args->map->state.y_rot += 0.01;
-		//y
-	}
-	if (keysym == 21 || keysym == 86)
-	{
-		args->map->state.y_rot -= 0.01;
-		//y
-	}
-	if (keysym == 23 || keysym == 87)
-	{
-		args->map->state.z_rot += 0.01;
-		//z
-	}
-	if (keysym == 22 || keysym == 88)
-	{
-		args->map->state.z_rot -= 0.01;
-		//z
-	}
-	draw_map(args->map, args->vars->img, args->vars);
+	else
+		change_state(keysym, args);
+	return (0);
+}
+
+// int	key_press(int keysym, t_args *args)
+// {
+// 	if (keysym == 53)
+// 		close_w(args);
+// 	args->map->state.keysym = keysym;
+// 	args->map->state.changing = 1;
+// 	return (0);
+// }
+
+// int	key_release(int keysym, t_args *args)
+// {
+// 	if (keysym == 53)
+// 		close_w(args);
+// 	// args->map->state.keysym = keysym;
+// 	args->map->state.changing = 0;
+// 	return (0);
+// }
+
+int	smoothing(t_args *args)
+{
+	if(args->map->state.lock)
+		change_state(args->map->state.keysym, args);
 	return (0);
 }
 
@@ -195,7 +251,6 @@ void plotLine(int x0, int y0, int x1, int y1, t_data *data)
       if (e2 <= dx) { err += dx; y0 += sy; } /* e_xy+e_y < 0 */
    }
 }
-#include <math.h>
 
 void rotate_z(int *x, int *y, float angle) {
     float cos_a = cos(angle);
@@ -235,10 +290,10 @@ void iso_projection(int *x, int *y, int z)
 	rotate_z(&p_x, y, -1.58);
 	// *x= p_x - *y;
     // *y= round((p_x + *y) / 2.0 - z);
-    *x = (p_x - *y) * cos(0.46373398);
-    *y = (p_x + *y) * sin(0.46373398) - z;
-	// *x = round((double)(p_x - *y) * cos(M_PI / 4.0));
-    // *y = round((double)(p_x + *y - 2 * z) * (sin(M_PI / 4.0) / sqrt(2)));
+    // *x = (p_x - *y) * cos(0.46373398);
+    // *y = (p_x + *y) * sin(0.46373398) - z;
+	*x = round((double)(p_x - *y) * cos(M_PI / 4.0));
+    *y = round((double)(p_x + *y - 2 * z) * (sin(M_PI / 4.0) / sqrt(2)));
 }
 
 
@@ -288,7 +343,7 @@ t_line get_line_1(int x, int y, t_map *map, t_position position)
 	points = map->points;
 	line.x1 = (x * map->state.scale) - position.left;
 	line.y1 = (y * map->state.scale) - position.bottom;
-	z = points[y][x].z * map->state.scale;
+	z = round((points[y][x].z * map->state.scale) / map->state.z_scale);
 	line.color1 = points[y][x].color;
 	rotate_x(&line.y1, &z, map->state.x_rot);
 	rotate_y(&line.x1, &z, map->state.y_rot);
@@ -298,7 +353,7 @@ t_line get_line_1(int x, int y, t_map *map, t_position position)
 	line.y1 += position.top;
 	line.x2 = ((x + 1) * map->state.scale) - position.left;
 	line.y2 = (y * map->state.scale) - position.bottom;
-	z = points[y][x + 1].z * map->state.scale;
+	z = round((points[y][x + 1].z * map->state.scale) / map->state.z_scale);
 	line.color2 = points[y][x + 1].color;
 	rotate_x(&line.y2, &z, map->state.x_rot);
 	rotate_y(&line.x2, &z, map->state.y_rot);
@@ -318,7 +373,7 @@ t_line get_line_2(int x, int y, t_map *map, t_position position)
 	points = map->points;
 	line.x1 = (x * map->state.scale) - position.left;
 	line.y1 = (y * map->state.scale) - position.bottom;
-	z = points[y][x].z * map->state.scale;
+	z = round((points[y][x].z * map->state.scale) / map->state.z_scale);
 	line.color1 = points[y][x].color;
 	rotate_x(&line.y1, &z, map->state.x_rot);
 	rotate_y(&line.x1, &z, map->state.y_rot);
@@ -328,7 +383,7 @@ t_line get_line_2(int x, int y, t_map *map, t_position position)
 	line.y1 += position.top;
 	line.x2 = (x * map->state.scale) - position.left;
 	line.y2 = ((y + 1) * map->state.scale) - position.bottom;
-	z = points[y + 1][x].z * map->state.scale;
+	z = round((points[y + 1][x].z * map->state.scale) / map->state.z_scale);
 	line.color2 = points[y + 1][x].color;
 	rotate_x(&line.y2, &z, map->state.x_rot);
 	rotate_y(&line.x2, &z, map->state.y_rot);
@@ -350,7 +405,7 @@ void	background(t_map *map, t_data *img)
 		x = 0;
 		while (x < WIDTH)
 		{
-			put_pixel(img, x, y, 0x00212529);
+			put_pixel(img, x, y, 0x000b090a);
 			x++;
 		}
 		y++;
@@ -412,12 +467,14 @@ int main(int ac, char **av)
 	args.vars = &vars;
 
 	init(&vars, &img);
-	mlx_hook(vars.win, 3, 0, key_handler, &args);
+	mlx_hook(vars.win, 2, 0, key_handler, &args);
+	// mlx_hook(vars.win, 3, 0, key_release, &args);
+
 	mlx_hook(vars.win, 17, 0, close_w, &args);
+	mlx_loop_hook(vars.mlx, smoothing, &args);
 
 	draw_map(map, &img, &vars);
 	mlx_loop(vars.mlx);
-	
 	clear_x(&args);
 	exit(0);
 }

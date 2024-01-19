@@ -43,9 +43,12 @@ typedef struct s_state
 	int	x_poz;
 	int	y_poz;
 	int	scale;
+	float		z_scale;
 	float	x_rot;
 	float	y_rot;
 	float	z_rot;
+	int		lock;
+	int		keysym;
 }	t_state;
 
 typedef	struct s_map
@@ -110,6 +113,8 @@ typedef struct s_delta
 void	drow_line(t_line line, t_data *img);
 void	draw_map(t_map *map, t_data *img, t_vars *vars);
 int	min(int n1, int n2);
+int	max(int n1, int n2);
 unsigned int	*gen_gradient(unsigned int c1, unsigned int c2, int num);
 int close_w(t_args *args);
+void	init_state(t_map *map);
 #endif

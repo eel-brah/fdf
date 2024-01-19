@@ -147,7 +147,7 @@ unsigned int	hex_to_int(char *h)
 	return (nbr);
 }
 
-char	*get_color(unsigned int *color, char *s)
+char	*get_color(unsigned int *color, int z, char *s)
 {
 	char	**c;
 
@@ -161,8 +161,10 @@ char	*get_color(unsigned int *color, char *s)
 		else
 			*color = (unsigned int)ft_atoi(c[1]);
 	}
+	else if (z > 0)
+		*color = 0xf72585;
 	else
-		*color = 16777215;
+		*color = 0x4cc9f0;
 	free_lines(c);
 	return (s);
 }
@@ -183,7 +185,7 @@ void	*fill_map_x(t_point **points, int y, int width, char **s)
 		points[y][x].x = x;
 		points[y][x].y = y;
 		points[y][x].z = ft_atoi(s[x]);
-		if (!get_color(&(points[y][x].color), s[x]))
+		if (!get_color(&(points[y][x].color), points[y][x].z, s[x]))
 		{
 			free_lines(s);
 			return (NULL);
@@ -247,10 +249,13 @@ void	init_state(t_map *map)
 {
 	map->state.x_poz = 0;
 	map->state.y_poz = 0;
-	map->state.scale = min(WIDTH / map->width / 2, HEIGHT / map->width / 2);
+	map->state.scale = max(min(WIDTH / map->width / 2, HEIGHT / map->width / 2), 1);
+	map->state.z_scale = 1;
 	map->state.x_rot = 0;
 	map->state.y_rot = 0;
 	map->state.z_rot = 0;
+	map->state.lock = 0;
+	map->state.keysym = 47;
 }
 
 t_map *gen_map(int fd)

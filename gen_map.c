@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 14:51:03 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/12 15:29:52 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/20 19:28:47 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,17 +268,16 @@ t_map *gen_map(int fd)
 	lines = get_lines(fd);
 	if (!lines)
 		return (NULL);
-	// print_lines(lines); // kkl
 	map = map_allocation(lines);
 	if (!map)
-		return (NULL);
+		exit(1);
 	y = fill_map(map, lines);
 	if (y != -1)
 	{
 		free_lines(lines);
 		map->height = y;
 		free_map(map);
-		return (NULL);
+		exit(1);
 	}
 	init_state(map);
 	free_lines(lines); 

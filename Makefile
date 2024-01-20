@@ -11,7 +11,7 @@ LIBFT := $(LIBFTDIR)/libft.a
 INCLUDE := $(INCLUDE_DIR)/fdf.h
 # INCLUDE_BONUS := $(INCLUDE_DIR)/minitalk_bonus.h
 
-SRC := fdf.c gnl.c gen_map.c drow_line.c
+SRC := fdf.c gnl.c gen_map.c drow_line.c draw_map.c state_changing.c pro_tat.c utils.c
 OBJ := $(SRC:.c=.o)
 # OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 

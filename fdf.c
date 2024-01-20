@@ -93,6 +93,17 @@ void	change_colors(int keysym, t_args *args)
 	}
 }
 
+void	change_projection(int keysym, t_args *args)
+{
+	if (keysym == 35)
+	{
+		if (args->map->state.projection == 'p')
+			args->map->state.projection = 'i';
+		else
+			args->map->state.projection = 'p';
+	}
+}
+
 void	change_state(int keysym, t_args *args)
 {
 	args->map->state.keysym = keysym;
@@ -101,8 +112,9 @@ void	change_state(int keysym, t_args *args)
 	rotate(keysym, args);
 	z_scale(keysym, args);
 	change_colors(keysym, args);
+	change_projection(keysym, args);
 	
-	ft_printf("%i\n", keysym);
+	// ft_printf("%i\n", keysym);
 	draw_map(args->map, args->vars->img, args->vars);
 }
 
@@ -282,20 +294,26 @@ void rotate_y(int *x, int *z, float angle) {
     *z = round(-px * sin_a + pz * cos_a);
 }
 
-void iso_projection(int *x, int *y, int z)
+void iso_projection(int *x, int *y, int z)        
 {
     int p_x;
 
     p_x = *x;
-	rotate_z(&p_x, y, -1.58);
+	// rotate_z(&p_x, y, -1.58);
 	// *x= p_x - *y;
     // *y= round((p_x + *y) / 2.0 - z);
-    // *x = (p_x - *y) * cos(0.46373398);
-    // *y = (p_x + *y) * sin(0.46373398) - z;
-	*x = round((double)(p_x - *y) * cos(M_PI / 4.0));
-    *y = round((double)(p_x + *y - 2 * z) * (sin(M_PI / 4.0) / sqrt(2)));
+    // *x = round((p_x - *y) * cos(0.523599));
+    // *y = round((p_x + *y) * sin(0.523599) - z);
+	*x = round((p_x - *y) * cos(M_PI / 4.0));
+    *y = round((p_x + *y - 2 * z) * (sin(M_PI / 4.0) / sqrt(2)));
 }
 
+void par_projection(int *x, int *y, int z)        
+{
+    (void)x;
+	(void)y;
+	(void)z;
+}
 
 int	min(int n1, int n2)
 {
@@ -334,7 +352,7 @@ int	get_zmax(t_point **points, int height, int width)
 	return (z_max);
 }
 
-t_line get_line_1(int x, int y, t_map *map, t_position position)
+t_line get_line_1(int x, int y, t_map *map, t_position position, void (*projection)(int *, int *, int))
 {
 	t_line	line;
 	t_point	**points;
@@ -348,7 +366,7 @@ t_line get_line_1(int x, int y, t_map *map, t_position position)
 	rotate_x(&line.y1, &z, map->state.x_rot);
 	rotate_y(&line.x1, &z, map->state.y_rot);
 	rotate_z(&line.x1, &line.y1, map->state.z_rot);
-	iso_projection(&line.x1, &line.y1, z);
+	projection(&line.x1, &line.y1, z);
 	line.x1 += position.right;
 	line.y1 += position.top;
 	line.x2 = ((x + 1) * map->state.scale) - position.left;
@@ -358,13 +376,13 @@ t_line get_line_1(int x, int y, t_map *map, t_position position)
 	rotate_x(&line.y2, &z, map->state.x_rot);
 	rotate_y(&line.x2, &z, map->state.y_rot);
 	rotate_z(&line.x2, &line.y2, map->state.z_rot);
-	iso_projection(&line.x2, &line.y2, z);
+	projection(&line.x2, &line.y2, z);
 	line.x2 += position.right;
 	line.y2 += position.top;
 	return (line);
 }
 
-t_line get_line_2(int x, int y, t_map *map, t_position position)
+t_line get_line_2(int x, int y, t_map *map, t_position position, void (*projection)(int *, int *, int))
 {
 	t_line	line;
 	t_point	**points;
@@ -378,7 +396,7 @@ t_line get_line_2(int x, int y, t_map *map, t_position position)
 	rotate_x(&line.y1, &z, map->state.x_rot);
 	rotate_y(&line.x1, &z, map->state.y_rot);
 	rotate_z(&line.x1, &line.y1, map->state.z_rot);
-	iso_projection(&line.x1, &line.y1, z);
+	projection(&line.x1, &line.y1, z);
 	line.x1 += position.right;
 	line.y1 += position.top;
 	line.x2 = (x * map->state.scale) - position.left;
@@ -388,7 +406,7 @@ t_line get_line_2(int x, int y, t_map *map, t_position position)
 	rotate_x(&line.y2, &z, map->state.x_rot);
 	rotate_y(&line.x2, &z, map->state.y_rot);
 	rotate_z(&line.x2, &line.y2, map->state.z_rot);
-	iso_projection(&line.x2, &line.y2, z);
+	projection(&line.x2, &line.y2, z);
 	line.x2 += position.right;
 	line.y2 += position.top;
 	return (line);
@@ -425,9 +443,14 @@ void	draw_map(t_map *map, t_data *img, t_vars *vars)
 	int			x;
 	int			y;
 	t_position	position;
+	void (*projection)(int *, int *, int);
 
 	background(map, img);
 	get_position(&position, map);
+	if (map->state.projection == 'p')
+		projection = par_projection;
+	else
+		projection = iso_projection;
 	y = 0;
 	while (y < map->height)
 	{
@@ -435,9 +458,9 @@ void	draw_map(t_map *map, t_data *img, t_vars *vars)
 		while (x < map->width)
 		{
 			if (x != map->width - 1)
-				drow_line(get_line_1(x, y, map, position), img);
+				drow_line(get_line_1(x, y, map, position, projection), img);
 			if (y != map->height - 1)
-				drow_line(get_line_2(x, y, map, position), img);
+				drow_line(get_line_2(x, y, map, position, projection), img);
 			x++;
 		}
 		y++;

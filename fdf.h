@@ -49,6 +49,7 @@ typedef struct s_state
 	float	z_rot;
 	int		lock;
 	int		keysym;
+	char	projection;
 }	t_state;
 
 typedef	struct s_map

@@ -256,6 +256,7 @@ void	init_state(t_map *map)
 	map->state.z_rot = 0;
 	map->state.lock = 0;
 	map->state.keysym = 47;
+	map->state.projection = 'i';
 }
 
 t_map *gen_map(int fd)

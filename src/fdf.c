@@ -6,11 +6,11 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 08:30:22 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/20 17:32:05 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/21 20:00:11 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../include/fdf.h"
 
 void fu()
 {
@@ -37,7 +37,8 @@ void	init(t_vars	*vars)
 		mlx_destroy_window(vars->mlx, vars->mlx);
 		exit(1);
 	}
-	vars->img->addr = mlx_get_data_addr(vars->img->img, &vars->img->bpp, &vars->img->line_length, &vars->img->endian);
+	vars->img->addr = mlx_get_data_addr(vars->img->img,
+			&vars->img->bpp, &vars->img->line_length, &vars->img->endian);
 }
 
 int	check_args(int ac, char **av)
@@ -62,7 +63,7 @@ void	draw_map(t_map *map, t_vars *vars, t_args *args)
 {
 	int			x;
 	int			y;
-	void (*projection)(int *, int *, int);
+	void		(*projection)(int *, int *, int);
 
 	set_background(vars->img);
 	get_position(map);
@@ -87,13 +88,12 @@ void	draw_map(t_map *map, t_vars *vars, t_args *args)
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
 }
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
-	// atexit(fu);
 	t_vars	vars;
 	t_data	img;
 	t_args	args;
-
+	// atexit(fu);
 	vars.img = &img;
 	args.vars = &vars;
 	args.fd = check_args(ac, av);

@@ -6,11 +6,11 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:17:55 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/20 17:18:11 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/21 19:51:58 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../include/fdf.h"
 
 void	movement(int keysym, t_args *args)
 {
@@ -26,6 +26,8 @@ void	movement(int keysym, t_args *args)
 
 void	rotate(int keysym, t_args *args)
 {
+	if (args->map->state.disko)
+		args->map->state.color += 1000; 
 	if (keysym == 18 || keysym == 83)
 		args->map->state.x_rot += 0.01;
 	if (keysym == 19 || keysym == 84)
@@ -47,6 +49,7 @@ void	z_scale(int keysym, t_args *args)
 	if (keysym == 27 && args->map->state.z_scale > 1)
 		args->map->state.z_scale -= 0.1;
 }
+
 void	zoom(int keysym, t_args *args)
 {
 	if (keysym == 34 || keysym == 69)
@@ -57,23 +60,14 @@ void	zoom(int keysym, t_args *args)
 
 void	change_colors(int keysym, t_args *args)
 {
-	int	i;
-	int	j;
 	int r;
 
 	r = 1000;
-	i = 0;
 	if (keysym == 8 || keysym == 9)
 	{
 		if (keysym == 9)
 			r *= -1;
-		while (i < args->map->height)
-		{
-			j = 0;
-			while (j < args->map->width)
-				args->map->points[i][j++].color += r; 
-			i++;
-		}
+		args->map->state.color += r; 
 	}
 }
 
@@ -88,6 +82,17 @@ void	change_projection(int keysym, t_args *args)
 	}
 }
 
+void	disko(int keysym, t_args *args)
+{
+	if (keysym == 40)
+	{
+		if (args->map->state.disko)
+			args->map->state.disko = 0;
+		else
+			args->map->state.disko = 1;
+	}
+}
+
 void	change_state(int keysym, t_args *args)
 {
 	args->map->state.keysym = keysym;
@@ -97,6 +102,8 @@ void	change_state(int keysym, t_args *args)
 	z_scale(keysym, args);
 	change_colors(keysym, args);
 	change_projection(keysym, args);
+	disko(keysym, args);
+	// ft_printf("%d\n", keysym);
 	draw_map(args->map, args->vars, args);
 }
 
@@ -125,5 +132,6 @@ int	smoothing(t_args *args)
 {
 	if(args->map->state.lock)
 		change_state(args->map->state.keysym, args);
+	
 	return (0);
 }

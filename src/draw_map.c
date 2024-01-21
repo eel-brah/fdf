@@ -6,11 +6,11 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 15:08:47 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/20 19:29:37 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/21 19:48:47 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../include/fdf.h"
 
 int	get_zmax(t_point **points, int height, int width)
 {
@@ -89,7 +89,7 @@ t_line get_line_1(int x, int y, t_map *map,
 	line.x1 = (x * map->state.scale) - map->position.left;
 	line.y1 = (y * map->state.scale) - map->position.bottom;
 	z = round((points[y][x].z * map->state.scale) / map->state.z_scale);
-	line.color1 = points[y][x].color;
+	line.color1 = points[y][x].color + map->state.color;
 	rotation(&line, &z, map, 1);
 	projection(&line.x1, &line.y1, z);
 	line.x1 += map->position.right;
@@ -97,7 +97,7 @@ t_line get_line_1(int x, int y, t_map *map,
 	line.x2 = ((x + 1) * map->state.scale) - map->position.left;
 	line.y2 = (y * map->state.scale) - map->position.bottom;
 	z = round((points[y][x + 1].z * map->state.scale) / map->state.z_scale);
-	line.color2 = points[y][x + 1].color;
+	line.color2 = points[y][x + 1].color + map->state.color;
 	rotation(&line, &z, map, 2);
 	projection(&line.x2, &line.y2, z);
 	line.x2 += map->position.right;
@@ -116,7 +116,7 @@ t_line get_line_2(int x, int y, t_map *map,
 	line.x1 = (x * map->state.scale) - map->position.left;
 	line.y1 = (y * map->state.scale) - map->position.bottom;
 	z = round((points[y][x].z * map->state.scale) / map->state.z_scale);
-	line.color1 = points[y][x].color;
+	line.color1 = points[y][x].color + map->state.color;
 	rotation(&line, &z, map, 1);
 	projection(&line.x1, &line.y1, z);
 	line.x1 += map->position.right;
@@ -124,7 +124,7 @@ t_line get_line_2(int x, int y, t_map *map,
 	line.x2 = (x * map->state.scale) - map->position.left;
 	line.y2 = ((y + 1) * map->state.scale) - map->position.bottom;
 	z = round((points[y + 1][x].z * map->state.scale) / map->state.z_scale);
-	line.color2 = points[y + 1][x].color;
+	line.color2 = points[y + 1][x].color + map->state.color;
 	rotation(&line, &z, map, 2);
 	projection(&line.x2, &line.y2, z);
 	line.x2 += map->position.right;

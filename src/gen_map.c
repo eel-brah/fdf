@@ -6,11 +6,11 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 14:51:03 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/20 19:28:47 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/21 19:48:47 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../include/fdf.h"
 
 void print_lines(char **ptr) // m
 {
@@ -257,6 +257,8 @@ void	init_state(t_map *map)
 	map->state.lock = 0;
 	map->state.keysym = 47;
 	map->state.projection = 'i';
+	map->state.color = 0;
+	map->state.disko = 0;
 }
 
 t_map *gen_map(int fd)

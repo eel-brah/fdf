@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 08:30:34 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/20 17:32:42 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/21 19:49:03 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <mlx.h>
 # include <libc.h>
 # include <math.h>
-# include "libft/libft.h"
+# include "../libft/libft.h"
 
 typedef struct s_point
 {
@@ -53,6 +53,8 @@ typedef struct s_state
 	int		lock;
 	int		keysym;
 	char	projection;
+	int		disko;
+	int		color;
 }	t_state;
 
 typedef	struct s_map

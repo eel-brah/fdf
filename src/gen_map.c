@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 14:51:03 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/21 19:48:47 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/21 20:14:57 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,7 +249,7 @@ void	init_state(t_map *map)
 {
 	map->state.x_poz = 0;
 	map->state.y_poz = 0;
-	map->state.scale = max(min(WIDTH / map->width / 2, HEIGHT / map->width / 2), 1);
+	map->state.scale = max(min(WIDTH / map->width / 2, HEIGHT / map->height / 2), 1);
 	map->state.z_scale = 1;
 	map->state.x_rot = 0;
 	map->state.y_rot = 0;

@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 15:08:47 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/21 19:48:47 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/21 20:10:39 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	set_background(t_data *img)
 		x = 0;
 		while (x < WIDTH)
 		{
-			put_pixel(img, x, y, 0x000b090a);
+			put_pixel(img, x, y, 0x00212529);
 			x++;
 		}
 		y++;

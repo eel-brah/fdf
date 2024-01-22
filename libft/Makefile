@@ -61,9 +61,10 @@ all: $(NAME)
 
 $(NAME): $(OBJ_FILES)
 	@$(AR) $(ARFLAGS) $@ $?
+	@echo "\033[1;32mlibft.a \033[0;32mhas been compiled"
 
 $(SRC_DIRS)/%.o: $(SRC_DIRS)/%.c $(INCLUDE)
-	@$(CC) $(CFLAGS) -I$(INCLUDE) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 bonus: $(BONUS_OBJ_FILES)
 	@$(AR) $(ARFLAGS) $(NAME) $^

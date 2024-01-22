@@ -6,11 +6,14 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 08:30:22 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/21 20:08:30 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/22 01:39:40 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
+
+// # define WIDTH 2000
+// # define HEIGHT 2000
 
 void fu()
 {
@@ -39,6 +42,7 @@ void	init(t_vars	*vars)
 	}
 	vars->img->addr = mlx_get_data_addr(vars->img->img,
 			&vars->img->bpp, &vars->img->line_length, &vars->img->endian);
+	ft_printf("%i %i\n", WIDTH, HEIGHT);
 }
 
 int	check_args(int ac, char **av)
@@ -88,6 +92,12 @@ void	draw_map(t_map *map, t_vars *vars, t_args *args)
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
 }
 
+// int msss(int button, int x, int y, void *param)
+// {
+// 	ft_printf("%i \n%i \n%i\n", button, x, y);
+// 	return 0;
+// }
+
 int	main(int ac, char **av)
 {
 	t_vars	vars;
@@ -107,6 +117,8 @@ int	main(int ac, char **av)
 	mlx_hook(vars.win, 2, 0, key_handler, &args);
 	mlx_hook(vars.win, 17, 0, close_w, &args);
 	// mouse
+	// mlx_hook(vars.win, 4, 0, msss, &args);
+	// mlx_hook(vars.win, 5, 0, msss, &args);
 	mlx_loop_hook(vars.mlx, smoothing, &args);
 	draw_map(args.map, &vars, &args);
 	mlx_loop(vars.mlx);

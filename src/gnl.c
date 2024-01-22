@@ -6,21 +6,11 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 23:46:21 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/21 19:48:47 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/21 23:54:37 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
-
-size_t	tt_strlen(const char *s)
-{
-	char	*ptr;
-
-	ptr = (char *)s;
-	while (ptr && *ptr)
-		ptr++;
-	return (ptr - s);
-}
 
 static size_t	ft_gnl_find_nl(size_t i, char *buf, int *rt, size_t buf_size)
 {

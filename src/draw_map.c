@@ -6,34 +6,11 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 15:08:47 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/21 20:10:39 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/21 23:41:41 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
-
-int	get_zmax(t_point **points, int height, int width)
-{
-	int	i;
-	int	j;
-	int	z_max;
-
-	i = 0;
-	j = 0;
-	z_max = 0;
-	while (i < height)
-	{
-		j = 0;
-		while (j < width)
-		{
-			if (z_max < points[i][j].z)
-				z_max = points[i][j].z;
-			j++;
-		}
-		i++;
-	}
-	return (z_max);
-}
 
 void	set_background(t_data *img)
 {
@@ -57,12 +34,12 @@ void	get_position(t_map *map)
 {
 	map->position.right = WIDTH / 2 + map->state.x_poz * map->state.scale;
 	map->position.top = (HEIGHT + get_zmax(map->points, map->height, map->width)
-				* map->state.scale) / 2 + map->state.y_poz * map->state.scale;
+			* map->state.scale) / 2 + map->state.y_poz * map->state.scale;
 	map->position.left = (map->width * map->state.scale) / 2;
 	map->position.bottom = (map->height * map->state.scale) / 2;
 }
 
-void rotation(t_line *line, int *z, t_map *map, int x)
+void	rotation(t_line *line, int *z, t_map *map, int x)
 {
 	if (x == 1)
 	{
@@ -78,7 +55,7 @@ void rotation(t_line *line, int *z, t_map *map, int x)
 	}
 }
 
-t_line get_line_1(int x, int y, t_map *map,
+t_line	get_line_1(int x, int y, t_map *map,
 				void (*projection)(int *, int *, int))
 {
 	t_line	line;
@@ -105,7 +82,7 @@ t_line get_line_1(int x, int y, t_map *map,
 	return (line);
 }
 
-t_line get_line_2(int x, int y, t_map *map,
+t_line	get_line_2(int x, int y, t_map *map,
 				void (*projection)(int *, int *, int))
 {
 	t_line	line;
@@ -131,4 +108,3 @@ t_line get_line_2(int x, int y, t_map *map,
 	line.y2 += map->position.top;
 	return (line);
 }
-

@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 23:31:22 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/22 01:13:19 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/23 02:19:59 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,17 @@ void	rotate(int keysym, t_args *args)
 
 void	z_scale(int keysym, t_args *args)
 {
-	if (keysym == Z_UP_KEY && args->map->state.z_scale < 20)
+	if ((keysym == Z_UP_KEY || keysym == Z_UP_KEY_2) && args->map->state.z_scale < 20)
 		args->map->state.z_scale += 0.1;
-	if (keysym == Z_DOWN_KEY && args->map->state.z_scale > 1)
+	if ((keysym == Z_DOWN_KEY || keysym == Z_DOWN_KEY_2) && args->map->state.z_scale > 1)
 		args->map->state.z_scale -= 0.1;
 }
 
 void	zoom(int keysym, t_args *args)
 {
-	if (keysym == ZOOM_IN_1_KEY || keysym == ZOOM_IN_2_KEY)
+	if (keysym == ZOOM_IN_KEY)
 		args->map->state.scale++;
-	if ((keysym == ZOOM_OUT_1_KEY || keysym == ZOOM_OUT_2_KEY) && args->map->state.scale > 1)
+	if ((keysym == ZOOM_OUT_KEY) && args->map->state.scale > 1)
 		args->map->state.scale--;
 }
 

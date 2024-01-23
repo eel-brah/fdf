@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 23:22:50 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/22 01:39:33 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/23 02:13:13 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ char	*get_color(unsigned int *color, int z, char *s)
 			*color = (unsigned int)ft_atoi(c[1]);
 	}
 	else if (z > 0)
-		*color = 0xf72585;
+		*color = DEF_COLOR;
 	else
-		*color = 0x4cc9f0;
+		*color = DEF_COLOR_2;
 	free_lines(c);
 	return (s);
 }
@@ -120,6 +120,5 @@ void	init_state(t_map *map)
 	map->state.projection = 'i';
 	map->state.color = 0;
 	map->state.disko = 0;
-	// ft_printf("%i %i\n", WIDTH, HEIGHT);
-
+	map->state.menu = 0;
 }

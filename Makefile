@@ -13,7 +13,8 @@ INCLUDE := $(INCLUDE_DIR)/fdf.h
 # INCLUDE_BONUS := $(INCLUDE_DIR)/minitalk_bonus.h
 
 SRC := fdf.c gnl.c gen_map.c gen_map_utils_1.c gen_map_utils_2.c draw_line.c draw_map.c \
-		state_changing_0.c state_changing_1.c projection.c utils_1.c utils_2.c gradient.c
+		state_changing_0.c state_changing_1.c projection.c utils_1.c utils_2.c gradient.c \
+		draw_menu.c
 SRC := $(addprefix $(SRC_DIRS)/,$(SRC))
 OBJ := $(SRC:.c=.o)
 
@@ -25,7 +26,7 @@ $(NAME): $(OBJ) $(LIBFT) $(INCLUDE)
 	@$(CC) $(CFLAGS) $(OBJ) -lmlx -framework OpenGL -framework AppKit $(LIBFT) -o $(NAME)
 	@echo "\033[1;32m$(NAME) \033[0;32mhas been compiled"
 
-%.o: %.c
+%.o: %.c $(INCLUDE)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 lib:

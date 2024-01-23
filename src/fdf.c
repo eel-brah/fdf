@@ -6,14 +6,11 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 08:30:22 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/22 01:39:40 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/23 02:29:49 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
-
-// # define WIDTH 2000
-// # define HEIGHT 2000
 
 void fu()
 {
@@ -42,7 +39,6 @@ void	init(t_vars	*vars)
 	}
 	vars->img->addr = mlx_get_data_addr(vars->img->img,
 			&vars->img->bpp, &vars->img->line_length, &vars->img->endian);
-	ft_printf("%i %i\n", WIDTH, HEIGHT);
 }
 
 int	check_args(int ac, char **av)
@@ -61,6 +57,19 @@ int	check_args(int ac, char **av)
 		exit(1);
 	}
 	return (fd);
+}
+
+void	draw_map_helper(t_map *map, t_vars *vars)
+{
+	if (!map->state.menu)
+		draw_pre_menu(vars);
+	if (map->state.menu)
+		draw_menu(vars);
+	mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
+	if (map->state.menu)
+		menu_text(vars);
+	if (!map->state.menu)
+		pre_menu_text(vars);
 }
 
 void	draw_map(t_map *map, t_vars *vars, t_args *args)
@@ -89,14 +98,8 @@ void	draw_map(t_map *map, t_vars *vars, t_args *args)
 		}
 		y++;
 	}
-	mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
+	draw_map_helper(map, vars);
 }
-
-// int msss(int button, int x, int y, void *param)
-// {
-// 	ft_printf("%i \n%i \n%i\n", button, x, y);
-// 	return 0;
-// }
 
 int	main(int ac, char **av)
 {
@@ -119,7 +122,7 @@ int	main(int ac, char **av)
 	// mouse
 	// mlx_hook(vars.win, 4, 0, msss, &args);
 	// mlx_hook(vars.win, 5, 0, msss, &args);
-	mlx_loop_hook(vars.mlx, smoothing, &args);
+	mlx_loop_hook(vars.mlx, animation, &args);
 	draw_map(args.map, &vars, &args);
 	mlx_loop(vars.mlx);
 	clear_x(&args);

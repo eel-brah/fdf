@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 23:46:28 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/21 23:54:48 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/23 02:04:13 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,11 @@ size_t	tt_strlen(const char *s)
 	while (ptr && *ptr)
 		ptr++;
 	return (ptr - s);
+}
+
+int	animation(t_args *args)
+{
+	if (args->map->state.lock)
+		change_state(args->map->state.keysym, args);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 04:09:51 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/23 04:12:33 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/23 07:58:40 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # define FDF_KEYS_H
 
 # define ESC_KEY 53
-# define ZERO_KEY1 82
-# define ZERO_KEY2 15
+# define ZERO_KEY 82
+# define R_KEY 15
 # define SPACE_KEY 49
 # define DISKO_KEY 40
 # define PRJ_KEY 35
@@ -25,8 +25,8 @@
 # define ZOOM_OUT_KEY 31
 # define Z_UP_KEY 27
 # define Z_DOWN_KEY 24
-# define Z_UP_KEY_2 69
-# define Z_DOWN_KEY_2 78
+# define Z_UP_KEY_2 78
+# define Z_DOWN_KEY_2 69
 # define UP_KEY 126
 # define DOWN_KEY 125
 # define RIGHT_KEY 124

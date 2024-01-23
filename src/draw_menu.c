@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 01:52:28 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/23 03:59:48 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/23 08:17:08 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ void	draw_pre_menu(t_vars *vars)
 	int	y;
 
 	y = 0;
-	while (y < 40)
+	while (y < PRE_MENU_WIDTH)
 	{
 		x = 0;
-		while (x < 165)
+		while (x < PRE_MENU_HEIGHT)
 		{
-			put_pixel(vars->img, x, y, 0x191c1f);
+			put_pixel(vars->img, x, y, MENU_COLOR);
 			x++;
 		}
 		y++;
@@ -41,12 +41,12 @@ void	draw_menu(t_vars *vars)
 	int	y;
 
 	y = 0;
-	while (y < 660)
+	while (y < MENU_WIDTH)
 	{
 		x = 0;
-		while (x < 190)
+		while (x < MENU_HEIGHT)
 		{
-			put_pixel(vars->img, x, y, 0x191c1f);
+			put_pixel(vars->img, x, y, MENU_COLOR);
 			x++;
 		}
 		y++;
@@ -64,16 +64,16 @@ void	menu_text_2(int x, int y, t_vars *vars)
 	mlx_string_put(vars->mlx, vars->win, x, y, TEXT_COLOR, "Color:");
 	mlx_string_put(vars->mlx, vars->win, x, y + 20, TEXT_COLOR_2, "c v");
 	y += (30 + 20);
-	mlx_string_put(vars->mlx, vars->win, x, y, TEXT_COLOR, "Start / Stop:");
+	mlx_string_put(vars->mlx, vars->win, x, y, TEXT_COLOR, "Start/Stop:");
 	mlx_string_put(vars->mlx, vars->win, x, y + 20, TEXT_COLOR_2, "space");
 	y += (30 + 20);
 	mlx_string_put(vars->mlx, vars->win, x, y, TEXT_COLOR, "Disko:");
 	mlx_string_put(vars->mlx, vars->win, x, y + 20, TEXT_COLOR_2, "k");
 	y += (30 + 20);
 	mlx_string_put(vars->mlx, vars->win, x, y, TEXT_COLOR, "Reset:");
-	mlx_string_put(vars->mlx, vars->win, x, y + 20, TEXT_COLOR_2, "0");
+	mlx_string_put(vars->mlx, vars->win, x, y + 20, TEXT_COLOR_2, "r or 0");
 	y += (30 + 20);
-	mlx_string_put(vars->mlx, vars->win, x, y, TEXT_COLOR, "Hide / Show Menu:");
+	mlx_string_put(vars->mlx, vars->win, x, y, TEXT_COLOR, "Hide/Show Menu:");
 	mlx_string_put(vars->mlx, vars->win, x, y + 20, TEXT_COLOR_2, "Tab or m");
 }
 
@@ -90,8 +90,8 @@ void	menu_text(t_vars *vars)
 	mlx_string_put(vars->mlx, vars->win, x, y + 20, TEXT_COLOR_2, "esc");
 	y += (30 + 20);
 	mlx_string_put(vars->mlx, vars->win, x, y, TEXT_COLOR, "Zoom:");
-	mlx_string_put(vars->mlx, vars->win, x, y + 20, TEXT_COLOR_2, "In i or +");
-	mlx_string_put(vars->mlx, vars->win, x, y + 40, TEXT_COLOR_2, "Out o or -");
+	mlx_string_put(vars->mlx, vars->win, x, y + 20, TEXT_COLOR_2, "In i");
+	mlx_string_put(vars->mlx, vars->win, x, y + 40, TEXT_COLOR_2, "Out o");
 	y += (30 + 40);
 	mlx_string_put(vars->mlx, vars->win, x, y, TEXT_COLOR, "Movement:");
 	mlx_string_put(vars->mlx, vars->win, x,

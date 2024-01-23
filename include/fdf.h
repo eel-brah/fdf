@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 08:30:34 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/23 04:30:50 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/23 08:27:41 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,16 @@
 
 # define WIDTH 1000
 # define HEIGHT 1000
+# define PRE_MENU_WIDTH 40
+# define PRE_MENU_HEIGHT 165
+# define MENU_WIDTH 660
+# define MENU_HEIGHT 190
 
 # define DEF_COLOR 0xf72585
 # define DEF_COLOR_2 0x4cc9f0
 # define TEXT_COLOR 0x114869
 # define TEXT_COLOR_2 0x669bbc
+# define MENU_COLOR 0x191c1f
 
 typedef struct s_point
 {
@@ -134,7 +139,7 @@ void			zoom(int keysym, t_args *args);
 void			z_scale(int keysym, t_args *args);
 void			rotate(int keysym, t_args *args);
 void			movement(int keysym, t_args *args);
-int				get_zmax(t_point **points, int height, int width);
+int				get_zmax(t_map *map);
 void			draw_line(t_line line, t_data *img, t_args *args);
 void			draw_map(t_map *map, t_vars *vars, t_args *args);
 unsigned int	*gen_gradient(unsigned int c1, unsigned int c2, int num);

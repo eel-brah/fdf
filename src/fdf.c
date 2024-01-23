@@ -6,16 +6,11 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 08:30:22 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/23 03:56:53 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/23 08:43:11 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
-
-void fu()
-{
-	system("leaks fdf");
-}
 
 void	init(t_vars	*vars)
 {
@@ -106,7 +101,7 @@ int	main(int ac, char **av)
 	t_vars	vars;
 	t_data	img;
 	t_args	args;
-	// atexit(fu);
+
 	vars.img = &img;
 	args.vars = &vars;
 	args.fd = check_args(ac, av);
@@ -121,6 +116,7 @@ int	main(int ac, char **av)
 	mlx_hook(vars.win, 17, 0, close_w, &args);
 	mlx_loop_hook(vars.mlx, animation, &args);
 	draw_map(args.map, &vars, &args);
+	ft_printf("\033[4;35m\033[1;95mFDF\033[0m \033[0;95mRunning...\033[0m\n");
 	mlx_loop(vars.mlx);
 	clear_x(&args);
 	exit(0);

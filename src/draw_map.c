@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 15:08:47 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/23 04:26:03 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/23 08:29:29 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void	set_background(t_data *img)
 void	get_position(t_map *map)
 {
 	map->position.right = WIDTH / 2 + map->state.x_poz * map->state.scale;
-	map->position.top = (HEIGHT + get_zmax(map->points, map->height, map->width)
-			* map->state.scale) / 2 + map->state.y_poz * map->state.scale;
+	map->position.top = (HEIGHT + get_zmax(map) * map->state.scale) / 2
+		+ map->state.y_poz * map->state.scale;
 	map->position.left = (map->width * map->state.scale) / 2;
 	map->position.bottom = (map->height * map->state.scale) / 2;
 }

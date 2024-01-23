@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:17:55 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/23 04:29:49 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/23 07:58:54 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	key_handler(int keysym, t_args *args)
 {
 	if (keysym == ESC_KEY)
 		close_w(args);
-	else if (keysym == ZERO_KEY1 || keysym == ZERO_KEY2)
+	else if (keysym == ZERO_KEY || keysym == R_KEY)
 	{
 		init_state(args->map);
 		draw_map(args->map, args->vars, args);

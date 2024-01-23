@@ -37,7 +37,7 @@ lib:
 	@echo "██╔══╝  ██║  ██║██╔══╝  "
 	@echo "██║     ██████╔╝██║     "
 	@echo "╚═╝     ╚═════╝ ╚═╝     "
-	@echo "\033[0m"
+#@echo "\033[0m"
 	@$(MAKE) -C $(LIBFTDIR)
 
 clean:

@@ -24,12 +24,20 @@ all: lib $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT) $(INCLUDE)
 	@$(CC) $(CFLAGS) $(OBJ) -lmlx -framework OpenGL -framework AppKit $(LIBFT) -o $(NAME)
-	@echo "\033[1;32m$(NAME) \033[0;32mhas been compiled"
+	@echo "\033[1;34m$(NAME) \033[0;34mhas been compiled"
 
 $(BUILD_DIR)/%.o: $(SRC_DIRS)/%.c $(INCLUDE)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 lib:
+	@echo "\033[1;34m"
+	@echo "███████╗██████╗ ███████╗"
+	@echo "██╔════╝██╔══██╗██╔════╝"
+	@echo "█████╗  ██║  ██║█████╗  "
+	@echo "██╔══╝  ██║  ██║██╔══╝  "
+	@echo "██║     ██████╔╝██║     "
+	@echo "╚═╝     ╚═════╝ ╚═╝     "
+	@echo "\033[0m"
 	@$(MAKE) -C $(LIBFTDIR)
 
 clean:

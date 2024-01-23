@@ -6,13 +6,13 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:17:55 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/23 01:40:21 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/23 04:29:49 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 
-void	change_projection(int keysym, t_args *args)
+void	change_projection(t_args *args)
 {
 	args->map->state.x_rot = 0;
 	args->map->state.y_rot = 0;
@@ -24,7 +24,7 @@ void	change_projection(int keysym, t_args *args)
 	draw_map(args->map, args->vars, args);
 }
 
-void	disko(int keysym, t_args *args)
+void	disko(t_args *args)
 {
 	if (args->map->state.disko)
 		args->map->state.disko = 0;
@@ -32,7 +32,7 @@ void	disko(int keysym, t_args *args)
 		args->map->state.disko = 1;
 }
 
-void	menu(int keysym, t_args *args)
+void	menu(t_args *args)
 {
 	if (args->map->state.menu)
 		args->map->state.menu = 0;
@@ -54,7 +54,6 @@ void	change_state(int keysym, t_args *args)
 
 int	key_handler(int keysym, t_args *args)
 {
-	ft_printf("%i\n", keysym);
 	if (keysym == ESC_KEY)
 		close_w(args);
 	else if (keysym == ZERO_KEY1 || keysym == ZERO_KEY2)
@@ -70,11 +69,11 @@ int	key_handler(int keysym, t_args *args)
 			args->map->state.lock = 0;
 	}
 	else if (keysym == PRJ_KEY)
-		change_projection(keysym, args);
+		change_projection(args);
 	else if (keysym == DISKO_KEY)
-		disko(keysym, args);
+		disko(args);
 	else if (keysym == M_KEY || keysym == H_KEY || keysym == TAB_KEY)
-		menu(keysym, args);
+		menu(args);
 	else
 		change_state(keysym, args);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 08:30:22 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/23 02:29:49 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/23 03:56:53 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,9 +119,6 @@ int	main(int ac, char **av)
 	init(&vars);
 	mlx_hook(vars.win, 2, 0, key_handler, &args);
 	mlx_hook(vars.win, 17, 0, close_w, &args);
-	// mouse
-	// mlx_hook(vars.win, 4, 0, msss, &args);
-	// mlx_hook(vars.win, 5, 0, msss, &args);
 	mlx_loop_hook(vars.mlx, animation, &args);
 	draw_map(args.map, &vars, &args);
 	mlx_loop(vars.mlx);

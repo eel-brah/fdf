@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 23:22:50 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/23 02:13:13 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/23 04:03:52 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	*fill_map_x(t_point **points, int y, int width, char **s)
 {
 	int		x;
 
-	points[y] = malloc(sizeof(t_point) * width);
+	points[y] = pr_malloc(width, sizeof(t_point));
 	if (!points[y])
 	{
 		free_lines(s);

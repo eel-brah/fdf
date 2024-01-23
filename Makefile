@@ -1,22 +1,22 @@
 CC := cc
-# CFLAGS := -Wall -Wextra -Werror
+CFLAGS := -Wall -Wextra -Werror
 
-INCLUDE_DIR := include
-SRC_DIRS := src
-# BUILD_DIR := build
+SRC_DIRS := ./src
+INCLUDE_DIR := ./include
+BUILD_DIR := ./build
 # BONUS_DIRS := 
-LIBFTDIR := libft
+LIBFTDIR := ./libft
 
 LIBFT := $(LIBFTDIR)/libft.a
-INCLUDE := $(INCLUDE_DIR)/fdf.h
-# INCLUDE := $(addprefix $(INCLUDE_DIR)/,$(INCLUDE))
+INCLUDE := fdf.h fdf_keys.h
+INCLUDE := $(addprefix $(INCLUDE_DIR)/,$(INCLUDE))
 # INCLUDE_BONUS := $(INCLUDE_DIR)/minitalk_bonus.h
 
 SRC := fdf.c gnl.c gen_map.c gen_map_utils_1.c gen_map_utils_2.c draw_line.c draw_map.c \
 		state_changing_0.c state_changing_1.c projection.c utils_1.c utils_2.c gradient.c \
 		draw_menu.c
-SRC := $(addprefix $(SRC_DIRS)/,$(SRC))
-OBJ := $(SRC:.c=.o)
+# SRC := $(addprefix $(SRC_DIRS)/,$(SRC))
+OBJ := $(SRC:%.c=$(BUILD_DIR)/%.o)
 
 NAME := fdf
 
@@ -26,7 +26,7 @@ $(NAME): $(OBJ) $(LIBFT) $(INCLUDE)
 	@$(CC) $(CFLAGS) $(OBJ) -lmlx -framework OpenGL -framework AppKit $(LIBFT) -o $(NAME)
 	@echo "\033[1;32m$(NAME) \033[0;32mhas been compiled"
 
-%.o: %.c $(INCLUDE)
+$(BUILD_DIR)/%.o: $(SRC_DIRS)/%.c $(INCLUDE)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 lib:

@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 01:52:28 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/23 02:32:22 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/23 03:59:48 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	draw_pre_menu(t_vars *vars)
 	while (y < 40)
 	{
 		x = 0;
-		while(x < 165)
+		while (x < 165)
 		{
 			put_pixel(vars->img, x, y, 0x191c1f);
 			x++;
@@ -44,7 +44,7 @@ void	draw_menu(t_vars *vars)
 	while (y < 660)
 	{
 		x = 0;
-		while(x < 190)
+		while (x < 190)
 		{
 			put_pixel(vars->img, x, y, 0x191c1f);
 			x++;
@@ -79,12 +79,13 @@ void	menu_text_2(int x, int y, t_vars *vars)
 
 void	menu_text(t_vars *vars)
 {
-	int x;
+	int	x;
 	int	y;
-	
+
 	x = 10;
 	y = 50;
-	mlx_string_put(vars->mlx, vars->win, x + 30, y - 30, TEXT_COLOR_2, "How To Use");
+	mlx_string_put(vars->mlx, vars->win, x + 30,
+		y - 30, TEXT_COLOR_2, "How To Use");
 	mlx_string_put(vars->mlx, vars->win, x, y, TEXT_COLOR, "Exit:");
 	mlx_string_put(vars->mlx, vars->win, x, y + 20, TEXT_COLOR_2, "esc");
 	y += (30 + 20);
@@ -93,7 +94,8 @@ void	menu_text(t_vars *vars)
 	mlx_string_put(vars->mlx, vars->win, x, y + 40, TEXT_COLOR_2, "Out o or -");
 	y += (30 + 40);
 	mlx_string_put(vars->mlx, vars->win, x, y, TEXT_COLOR, "Movement:");
-	mlx_string_put(vars->mlx, vars->win, x, y + 20, TEXT_COLOR_2, "Arrows or WASD");
+	mlx_string_put(vars->mlx, vars->win, x,
+		y + 20, TEXT_COLOR_2, "Arrows or WASD");
 	y += (30 + 20);
 	mlx_string_put(vars->mlx, vars->win, x, y, TEXT_COLOR, "Rotatation:");
 	mlx_string_put(vars->mlx, vars->win, x, y + 20, TEXT_COLOR_2, "x-axis 1 2");

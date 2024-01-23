@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 23:42:48 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/21 23:54:15 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/23 04:03:11 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ unsigned int	*gen_gradient(unsigned int c1, unsigned int c2, int num)
 	double			color_per;
 	int				color;
 
-	gradient = malloc(sizeof(int) * num);
+	gradient = pr_malloc(num, sizeof(int));
 	if (!gradient)
 		return (NULL);
 	i = 1;

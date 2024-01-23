@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:12:12 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/22 01:15:11 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/23 03:56:13 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ void	rotate_y(int *x, int *z, float angle)
 
 void	iso_projection(int *x, int *y, int z)
 {
-	rotate_x(y, &z, 90 * M_PI/180);
-	rotate_y(x, &z, 45 * M_PI/180);
-	rotate_x(y, &z, -35.264 * M_PI/180);
+	rotate_x(y, &z, 90 * (M_PI / 180));
+	rotate_y(x, &z, 45 * (M_PI / 180));
+	rotate_x(y, &z, -35.264 * (M_PI / 180));
 }
 
 void	par_projection(int *x, int *y, int z)

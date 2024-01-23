@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 23:15:47 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/21 23:23:13 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/23 04:04:17 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char	**new_line(char **lines, int l)
 	char	**ptr;
 	int		i;
 
-	ptr = malloc(sizeof(char *) * (l + 1));
+	ptr = pr_malloc(l + 1, sizeof(char *));
 	if (!ptr)
 	{
 		i = 0;

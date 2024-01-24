@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 08:30:22 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/23 11:31:27 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/24 02:41:53 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	check_args(int ac, char **av)
 	int	fd;
 	(void)ac;
 
-	if ((ac != 2) || ((ft_strlen(av[1]) == 4) || ft_strncmp(av[1] + (ft_strlen(av[1]) - 4), ".fdf", 4)))
+	if ((ac != 2) || (ft_strncmp(av[1] + (ft_strlen(av[1]) - 4), ".fdf", 4)))
 	{
 		ft_putstr_fd("Invalid number of argiments\n./fdf map.fdf\n", 2);
 		exit(1);

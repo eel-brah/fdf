@@ -9,33 +9,27 @@
 
 How To Use
 ==========
-Exit: esc
-Zoom in: i
-Zoom out: o
-Movement: Arrows or WASD
-Rotatation: x-axis 1 2 / y-axis 3 4 / z-axis 5 6
-Z_scale: - +
-Change Projection: p
-Change Color: c v
-Start/Stop: space
-Disko: k
-Reset: r or 0
-Hide/Show Menu: Tab, m or h
+Exit: esc <br>
+Zoom in: i <br>
+Zoom out: o <br>
+Movement: Arrows or WASD <br>
+Rotatation: x-axis 1 2 / y-axis 3 4 / z-axis 5 6 <br>
+Z_scale: - + <br>
+Change Projection: p <br>
+Change Color: c v <br>
+Start/Stop: space <br>
+Disko: k <br>
+Reset: r or 0 <br>
+Hide/Show Menu: Tab, m or h <br>
 
 Resources
 ==========
-[Liner Algebra](https://www.youtube.com/watch?v=fNk_zzaMoSs&list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab)
-[x protocol](https://en.wikipedia.org/wiki/X_Window_System)
-[Xlib](https://en.wikipedia.org/wiki/Xlib)
-minilibix: 
- - [Source](https://harm-smits.github.io/42docs/libs/minilibx)
- - [Source](https://aurelienbrabant.fr/blog?q=minilibx)
-How To Drow a Line:
-[dda](https://www.youtube.com/watch?v=W5P8GlaEOSI)
-Bresenham
- - [Source](https://www.youtube.com/watch?v=RGB-wlatStc)
- - [Source](https://medium.com/geekculture/bresenhams-line-drawing-algorithm-2e0e953901b3)
- - [Source](http://members.chello.at/~easyfilter/bresenham.html)
-[Isometric Projection](https://en.wikipedia.org/wiki/Isometric_projection)
-[Rotation](https://en.wikipedia.org/wiki/Rotation_matrix)
+[Liner Algebra](https://www.youtube.com/watch?v=fNk_zzaMoSs&list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab) <br>
+[x protocol](https://en.wikipedia.org/wiki/X_Window_System) <br>
+[Xlib](https://en.wikipedia.org/wiki/Xlib) <br>
+minilibix:  [Source 1](https://harm-smits.github.io/42docs/libs/minilibx) [Source 2](https://aurelienbrabant.fr/blog?q=minilibx) <br>
+[dda](https://www.youtube.com/watch?v=W5P8GlaEOSI) <br>
+Bresenham [Source 1](https://www.youtube.com/watch?v=RGB-wlatStc) [Source 2](https://medium.com/geekculture/bresenhams-line-drawing-algorithm-2e0e953901b3) [Source 3](http://members.chello.at/~easyfilter/bresenham.html) <br>
+[Isometric Projection](https://en.wikipedia.org/wiki/Isometric_projection) <br>
+[Rotation](https://en.wikipedia.org/wiki/Rotation_matrix) <br>
 

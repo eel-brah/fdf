@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 08:30:34 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/23 08:27:41 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/02/10 10:01:06 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <mlx.h>
 # include <libc.h>
 # include <math.h>
-# include "../libft/libft.h"
+# include "../libft/include/libft.h"
 # include "fdf_keys.h"
 
 # define WIDTH 1000

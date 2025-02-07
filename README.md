@@ -9,6 +9,22 @@
 
 How To Use
 ==========
+
+Compile the program:<br>
+```make```<br>
+Run the program with a map file:<br>
+```./fdf maps/42.fdf```<br>
+
+#### Running in Docker<br>
+Prerequisites:<br>
+Ensure you have Docker installed on your system.<br>
+If running on Linux, allow X11 forwarding with:<br>
+```xhost +local:docker```<br>
+Run:<br>
+```make run-docker```<br>
+
+Keys
+====
 Exit: esc <br>
 Zoom in: i <br>
 Zoom out: o <br>

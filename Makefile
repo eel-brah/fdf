@@ -57,4 +57,15 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re lib
+DOCKER_IMAGE := fdf:0.1
+
+build-docker:
+	@docker build -t $(DOCKER_IMAGE) .
+
+run-docker: build-docker
+	@docker run -it --rm \
+		-e DISPLAY=$(DISPLAY) \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		$(DOCKER_IMAGE)
+
+.PHONY: all clean fclean re lib build-docker run-docker

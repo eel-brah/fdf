@@ -6,48 +6,50 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 04:09:51 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/23 07:58:40 by eel-brah         ###   ########.fr       */
+/*   Updated: 2025/02/07 21:31:14 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_KEYS_H
 # define FDF_KEYS_H
 
-# define ESC_KEY 53
-# define ZERO_KEY 82
-# define R_KEY 15
-# define SPACE_KEY 49
-# define DISKO_KEY 40
-# define PRJ_KEY 35
-# define COLOR_C_KEY 8
-# define COLOR_V_KEY 9
-# define ZOOM_IN_KEY 34
-# define ZOOM_OUT_KEY 31
-# define Z_UP_KEY 27
-# define Z_DOWN_KEY 24
-# define Z_UP_KEY_2 78
-# define Z_DOWN_KEY_2 69
-# define UP_KEY 126
-# define DOWN_KEY 125
-# define RIGHT_KEY 124
-# define LEFT_KEY 123
-# define UP_W_KEY 13
-# define DOWN_S_KEY 1
-# define RIGHT_D_KEY 2
-# define LEFT_S_KEY 0
-# define RRX_KEY 18
-# define RLX_KEY 19
-# define RRY_KEY 20
-# define RLY_KEY 21
-# define RRZ_KEY 23
-# define RLZ_KEY 22
-# define RRX2_KEY 83
-# define RLX2_KEY 84
-# define RRY2_KEY 85
-# define RLY2_KEY 86
-# define RRZ2_KEY 87
-# define RLZ2_KEY 88
-# define M_KEY 46
-# define H_KEY 4
-# define TAB_KEY 48
+# define ESC_KEY  65307  // Escape key
+# define ZERO_KEY 48      // '0' key
+# define R_KEY 114        // 'r' key
+# define SPACE_KEY 32     // Space bar
+# define DISKO_KEY 107     // 'k' key
+# define PRJ_KEY 112       // 'p' key
+# define COLOR_C_KEY 99   // 'c' key
+# define COLOR_V_KEY 118  // 'v' key
+# define ZOOM_IN_KEY 105   // 'i' key
+# define ZOOM_OUT_KEY 111  // 'o' key
+# define Z_UP_KEY 122     // 'z' key
+# define Z_DOWN_KEY 120   // 'x' key
+# define Z_UP_KEY_2 61 // key '+'
+# define Z_DOWN_KEY_2 45 // key '-'
+# define UP_KEY 65362     // Up arrow
+# define DOWN_KEY 65364   // Down arrow
+# define RIGHT_KEY 65363  // Right arrow
+# define LEFT_KEY 65361   // Left arrow
+# define UP_W_KEY 119     // 'w' key
+# define DOWN_S_KEY 115   // 's' key
+# define RIGHT_D_KEY 100  // 'd' key
+# define LEFT_S_KEY 97    // 'a' key
+# define RRX_KEY 49       // '1' key
+# define RLX_KEY 50       // '2' key
+# define RRY_KEY 51       // '3' key
+# define RLY_KEY 52       // '4' key
+# define RRZ_KEY 53       // '5' key
+# define RLZ_KEY 54       // '6' key
+# define RRX2_KEY 65436   // Numpad 1
+# define RLX2_KEY 65433   // Numpad 2
+# define RRY2_KEY 65435   // Numpad 3
+# define RLY2_KEY 65430   // Numpad 4
+# define RRZ2_KEY 65437   // Numpad 5
+# define RLZ2_KEY 65432   // Numpad 6
+# define M_KEY 109        // 'm' key
+# define H_KEY 104        // 'h' key
+# define TAB_KEY 65289    // Tab key
+
+
 #endif

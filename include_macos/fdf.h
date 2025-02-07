@@ -6,14 +6,14 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 08:30:34 by eel-brah          #+#    #+#             */
-/*   Updated: 2025/02/07 21:16:26 by eel-brah         ###   ########.fr       */
+/*   Updated: 2025/02/07 22:16:56 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
-# include "../minilibx-linux/mlx.h"
+# include "../minilibx_opengl/mlx.h"
 # include <math.h>
 # include <fcntl.h>
 # include "../libft/include/libft.h"

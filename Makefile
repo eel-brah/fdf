@@ -1,8 +1,17 @@
 CC := cc
 CFLAGS := -Wall -Wextra -Werror
 
+OS := $(shell uname)
+
+ifeq ($(OS), Darwin)  # macOS
+    MLX_FLAGS := -lmlx -framework OpenGL -framework AppKit
+		INCLUDE_DIR := ./include_macos
+else  # Linux
+    MLX_FLAGS := -Lminilibx-linux -lmlx -lX11 -lXext -lm
+		INCLUDE_DIR := ./include
+endif
+
 SRC_DIRS := ./src
-INCLUDE_DIR := ./include
 BUILD_DIR := ./build
 LIBFTDIR := ./libft
 
@@ -20,7 +29,7 @@ NAME := fdf
 all: lib $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT) $(INCLUDE)
-	@$(CC) $(CFLAGS) $(OBJ) -lmlx -framework OpenGL -framework AppKit $(LIBFT) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJ) $(MLX_FLAGS) $(LIBFT) -o $(NAME)
 	@echo "\033[1;34m$(NAME) \033[0;34mhas been compiled"
 
 $(BUILD_DIR)/%.o: $(SRC_DIRS)/%.c $(INCLUDE)

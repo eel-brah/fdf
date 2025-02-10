@@ -6,11 +6,11 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 15:08:47 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/23 10:46:12 by eel-brah         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:30:13 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/fdf.h"
+#include "../platform.h"
 
 void	set_background(t_data *img)
 {

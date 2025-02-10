@@ -6,11 +6,11 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 23:31:22 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/23 03:55:44 by eel-brah         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:31:08 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/fdf.h"
+#include "../platform.h"
 
 void	movement(int keysym, t_args *args)
 {

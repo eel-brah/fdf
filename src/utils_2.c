@@ -6,11 +6,11 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 23:46:28 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/23 08:27:32 by eel-brah         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:31:19 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/fdf.h"
+#include "../platform.h"
 
 void	clear_x(t_args *args)
 {

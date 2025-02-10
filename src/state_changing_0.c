@@ -6,11 +6,11 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:17:55 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/23 07:58:54 by eel-brah         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:31:06 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/fdf.h"
+#include "../platform.h"
 
 void	change_projection(t_args *args)
 {

@@ -6,11 +6,11 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:12:12 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/23 10:57:19 by eel-brah         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:31:02 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/fdf.h"
+#include "../platform.h"
 
 void	rotate_z(int *x, int *y, float angle)
 {

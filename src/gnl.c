@@ -6,11 +6,11 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 23:46:21 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/21 23:54:37 by eel-brah         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:30:55 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/fdf.h"
+#include "../platform.h"
 
 static size_t	ft_gnl_find_nl(size_t i, char *buf, int *rt, size_t buf_size)
 {

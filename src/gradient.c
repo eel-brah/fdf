@@ -6,11 +6,11 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 23:42:48 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/23 04:03:11 by eel-brah         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:30:59 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/fdf.h"
+#include "../platform.h"
 
 unsigned int	calc_color(double c1, double c2, double per)
 {

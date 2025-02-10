@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+exec 1>/dev/null # Redirect stdout to /dev/null
 
 set -e
 

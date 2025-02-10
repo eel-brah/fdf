@@ -6,11 +6,11 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 21:22:06 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/21 23:45:02 by eel-brah         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:29:41 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/fdf.h"
+#include "../platform.h"
 
 void	put_pixel(t_data *data, int x, int y, unsigned int color)
 {

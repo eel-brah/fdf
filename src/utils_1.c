@@ -6,11 +6,11 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 23:47:12 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/21 23:50:50 by eel-brah         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:31:15 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/fdf.h"
+#include "../platform.h"
 
 int	min(int n1, int n2)
 {

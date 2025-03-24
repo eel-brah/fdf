@@ -75,4 +75,7 @@ run-docker: build-docker
 		-v /tmp/.X11-unix:/tmp/.X11-unix \
 		$(DOCKER_IMAGE)
 
-.PHONY: all clean fclean re lib build-docker run-docker
+clean-docker:
+	@docker rmi -f $(DOCKER_IMAGE)
+
+.PHONY: all clean fclean re lib build-docker run-docker clean-docker
